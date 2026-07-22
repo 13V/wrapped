@@ -34,6 +34,7 @@ export function Marquee({
   const smooth = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
   const factor = useTransform(smooth, [0, 1000], [0, 4], { clamp: false });
   const x = useTransform(baseX, (v) => `${wrap(-25, 0, v)}%`);
+  const skewX = useTransform(factor, [-3, 0, 3], [-7, 0, 7], { clamp: true });
   const dir = useRef(1);
 
   useAnimationFrame((_t, delta) => {
@@ -49,7 +50,7 @@ export function Marquee({
   const row = [...items, ...items, ...items, ...items];
   return (
     <div className={`overflow-hidden ${className}`}>
-      <motion.div className="inline-flex whitespace-nowrap" style={{ x }}>
+      <motion.div className="inline-flex whitespace-nowrap" style={{ x, skewX }}>
         {row.map((t, i) => (
           <span
             key={i}

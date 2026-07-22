@@ -1,10 +1,11 @@
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
-import { Steps } from "@/components/Steps";
+import { HowItWorks } from "@/components/HowItWorks";
 import { TryIt } from "@/components/TryIt";
 import { Occasions } from "@/components/Occasions";
 import { Safe } from "@/components/Safe";
 import { Marquee } from "@/components/Marquee";
+import { CrossingMarquee } from "@/components/CrossingMarquee";
 import { ClaimOverlay } from "@/components/ClaimOverlay";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { Reveal } from "@/components/Reveal";
@@ -19,9 +20,13 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Steps />
+        <HowItWorks />
         <TryIt />
         <Occasions />
+        <CrossingMarquee
+          a={["fling the cards", "1 of 1 holo", "gift crypto that slaps", "no seed phrase"]}
+          b={["to the group chat", "gas on us", "claim in 2 taps", "made on solana"]}
+        />
         <Safe />
 
         {/* CTA band */}
