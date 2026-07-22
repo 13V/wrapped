@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useMotionValue } from "motion/react";
+import { useRef } from "react";
 import { PackRip } from "./PackRip";
 import { Marquee } from "./Marquee";
 import { Magnetic } from "./Magnetic";
@@ -8,8 +9,32 @@ import { Magnetic } from "./Magnetic";
 const words = ["gift", "crypto", "that", "actually", "slaps."];
 
 export function Hero() {
+  const secRef = useRef<HTMLElement>(null);
+  const mx = useMotionValue(-500);
+  const my = useMotionValue(-500);
+
+  function onMove(e: React.PointerEvent) {
+    const el = secRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    mx.set(e.clientX - r.left);
+    my.set(e.clientY - r.top);
+  }
+
   return (
-    <section id="top" className="relative z-10 px-4 pt-10 pb-6 md:pt-16">
+    <section
+      id="top"
+      ref={secRef}
+      onPointerMove={onMove}
+      className="relative z-10 overflow-hidden px-4 pt-10 pb-6 md:pt-16"
+    >
+      {/* cursor-follow glow */}
+      <motion.div
+        aria-hidden
+        style={{ x: mx, y: my, background: "radial-gradient(circle, #ff3d9a, transparent 66%)" }}
+        className="pointer-events-none absolute z-0 -ml-40 -mt-40 h-80 w-80 rounded-full opacity-30 blur-3xl"
+      />
+
       <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
         <div className="relative z-10">
           <motion.p
@@ -27,7 +52,8 @@ export function Hero() {
                 initial={{ opacity: 0, y: 24, rotate: -4 }}
                 animate={{ opacity: 1, y: 0, rotate: 0 }}
                 transition={{ delay: 0.08 * i + 0.1, type: "spring", stiffness: 260, damping: 16 }}
-                className={`mr-3 inline-block ${w === "slaps." ? "text-pink [text-shadow:3px_0_var(--color-cyan),-3px_0_var(--color-lime)]" : ""}`}
+                whileHover={{ scale: 1.09, rotate: -3, transition: { type: "spring", stiffness: 400, damping: 12 } }}
+                className={`mr-3 inline-block cursor-default ${w === "slaps." ? "text-pink [text-shadow:3px_0_var(--color-cyan),-3px_0_var(--color-lime)]" : ""}`}
               >
                 {w}
               </motion.span>

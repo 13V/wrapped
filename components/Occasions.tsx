@@ -17,23 +17,28 @@ export function Occasions() {
             a card for every <span className="text-pink">main-character</span> moment.
           </h2>
           <p className="mb-12 max-w-lg text-lg font-medium text-muted">
-            each one&apos;s a 1-of-1 holographic drop. yes, even the rug one.
+            each one&apos;s a 1-of-1 holographic drop. yes, even the rug one. hover to tilt.
           </p>
         </Reveal>
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
           {OCCASION_LIST.map((o, i) => (
             <motion.div
               key={o.key}
-              initial={{ opacity: 0, y: 30, rotate: -3 }}
+              initial={{ opacity: 0, y: 34, rotate: -3 }}
               whileInView={{ opacity: 1, y: 0, rotate: i % 2 ? 2 : -2 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ delay: i * 0.06, type: "spring", stiffness: 140, damping: 15 }}
-              whileHover={{ rotate: 0, y: -8, scale: 1.03 }}
+              transition={{ delay: i * 0.07, type: "spring", stiffness: 140, damping: 15 }}
             >
-              <HoloCard
-                gift={{ occ: o.key, amt: AMTS[i], token: TOKS[i], to: "you", from: "wrapped", msg: o.blurb }}
-                interactive={false}
-              />
+              <motion.div
+                animate={{ y: [0, -9, 0] }}
+                transition={{ duration: 5 + i * 0.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.35 }}
+              >
+                <HoloCard
+                  gift={{ occ: o.key, amt: AMTS[i], token: TOKS[i], to: "you", from: "wrapped", msg: o.blurb }}
+                  interactive
+                  hint={false}
+                />
+              </motion.div>
             </motion.div>
           ))}
         </div>

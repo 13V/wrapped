@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Reveal } from "./Reveal";
+import { TiltCard } from "./TiltCard";
 
 const STEPS = [
   { n: "01", emoji: "🎁", title: "wrap it", body: "pick a vibe, choose any token, add a message. it becomes a 1-of-1 holo card.", bg: "var(--color-pink)", fg: "#fff" },
@@ -25,20 +26,30 @@ export function Steps() {
           {STEPS.map((s, i) => (
             <motion.div
               key={s.n}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 44, rotate: i % 2 ? 3 : -3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ delay: i * 0.1, type: "spring", stiffness: 120, damping: 16 }}
-              whileHover={{ y: -6, rotate: i % 2 ? 1 : -1 }}
-              className="rounded-3xl border-[3px] border-ink p-7 shadow-hard"
-              style={{ background: s.bg, color: s.fg }}
+              transition={{ delay: i * 0.12, type: "spring", stiffness: 120, damping: 15 }}
             >
-              <div className="flex items-center justify-between">
-                <span className="text-5xl">{s.emoji}</span>
-                <span className="font-mono text-2xl font-bold opacity-40">{s.n}</span>
-              </div>
-              <h3 className="mt-6 font-display text-3xl font-black lowercase">{s.title}</h3>
-              <p className="mt-2 font-semibold opacity-85">{s.body}</p>
+              <TiltCard className="group relative overflow-hidden rounded-3xl border-[3px] border-ink p-7 shadow-hard" max={9}>
+                <div className="absolute inset-0" style={{ background: s.bg }} />
+                {/* hover shine sweep */}
+                <div className="pointer-events-none absolute -inset-y-8 -left-1/3 w-1/3 -skew-x-12 bg-white/35 blur-md transition-transform duration-700 ease-out group-hover:translate-x-[420%]" />
+                <div className="relative" style={{ color: s.fg }}>
+                  <div className="flex items-center justify-between">
+                    <motion.span
+                      className="inline-block text-5xl"
+                      animate={{ y: [0, -8, 0], rotate: [0, -6, 0] }}
+                      transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
+                    >
+                      {s.emoji}
+                    </motion.span>
+                    <span className="font-mono text-2xl font-bold opacity-40">{s.n}</span>
+                  </div>
+                  <h3 className="mt-6 font-display text-3xl font-black lowercase">{s.title}</h3>
+                  <p className="mt-2 font-semibold opacity-85">{s.body}</p>
+                </div>
+              </TiltCard>
             </motion.div>
           ))}
         </div>

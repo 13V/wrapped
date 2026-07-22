@@ -9,10 +9,12 @@ import { ClaimOverlay } from "@/components/ClaimOverlay";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { Reveal } from "@/components/Reveal";
 import { Magnetic } from "@/components/Magnetic";
+import { FloatingBg } from "@/components/FloatingBg";
 
 export default function Home() {
   return (
     <>
+      <FloatingBg />
       <ScrollProgress />
       <Nav />
       <main>
@@ -24,10 +26,7 @@ export default function Home() {
 
         {/* CTA band */}
         <section className="relative z-10 px-4 py-16">
-          <div
-            className="mx-auto max-w-6xl rotate-[-0.6deg] overflow-hidden rounded-[32px] border-2 border-ink"
-            style={{ background: "linear-gradient(120deg, #ff3d9a, #9b6bff 55%, #22e0ff)" }}
-          >
+          <div className="animated-grad mx-auto max-w-6xl rotate-[-0.6deg] overflow-hidden rounded-[32px] border-2 border-ink">
             <div className="border-b-2 border-ink bg-lime py-2">
               <Marquee items={["send one to the group chat", "gift crypto that slaps", "no seed phrase"]} />
             </div>

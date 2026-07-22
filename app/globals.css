@@ -115,6 +115,17 @@ body::before {
 .marquee-track { display: inline-flex; white-space: nowrap; animation: marquee 22s linear infinite; }
 .marquee-track.reverse { animation-direction: reverse; }
 
+/* ================= animated gradient ================= */
+@keyframes grad-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+.animated-grad {
+  background-image: linear-gradient(115deg, #ff3d9a, #9b6bff, #22e0ff, #ff3d9a);
+  background-size: 300% 100%;
+  animation: grad-shift 9s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

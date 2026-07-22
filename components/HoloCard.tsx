@@ -20,12 +20,14 @@ export function HoloCard({
   interactive = true,
   float = false,
   reveal = false,
+  hint = true,
   className = "",
 }: {
   gift: Gift;
   interactive?: boolean;
   float?: boolean;
   reveal?: boolean;
+  hint?: boolean;
   className?: string;
 }) {
   const o = OCCASIONS[gift.occ as OccasionKey] ?? OCCASIONS.birthday;
@@ -160,7 +162,7 @@ export function HoloCard({
         </div>
       </motion.div>
 
-      {interactive && (
+      {interactive && hint && (
         <p className="mt-3 text-center font-mono text-[11px] font-bold uppercase text-muted">tilt it · tap to flip ⟳</p>
       )}
     </motion.div>
