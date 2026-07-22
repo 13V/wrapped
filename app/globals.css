@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme {
+  /* crisp cool-white page; the holo cards keep their own dark base so foil pops */
+  --color-base: #f4f3fa;
+  --color-surface: #ffffff;
+  --color-surface-2: #ecebf5;
+  --color-text: #141018;
+  --color-ink: #141018;
+  --color-muted: #6b6678;
+  --color-line: #e3e1ee;
+
+  /* neon accents */
+  --color-pink: #ff2d92;
+  --color-cyan: #12b9d8;
+  --color-violet: #7a5bff;
+  --color-lime: #bfff3a;
+  --color-gold: #ffbf1f;
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --shadow-hard: 5px 5px 0 0 var(--color-ink);
+  --shadow-hard-sm: 3px 3px 0 0 var(--color-ink);
+  --shadow-hard-lg: 8px 8px 0 0 var(--color-ink);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background-color: var(--color-base);
+  background-image:
+    radial-gradient(55% 45% at 12% 0%, color-mix(in srgb, var(--color-violet) 14%, transparent), transparent 60%),
+    radial-gradient(50% 40% at 92% 5%, color-mix(in srgb, var(--color-cyan) 16%, transparent), transparent 58%),
+    radial-gradient(55% 45% at 82% 96%, color-mix(in srgb, var(--color-pink) 12%, transparent), transparent 60%);
+  color: var(--color-text);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+::selection { background: var(--color-lime); color: #141018; }
+
+.font-display { font-family: var(--font-display), system-ui, sans-serif; }
+.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
+
+/* subtle film grain */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  opacity: 0.28; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+/* ================= holographic foil ================= */
+/* chunky, wide rainbow bands — vivid over a dark card */
+@keyframes holo-drift {
+  0%   { background-position: 0% 50%, 0% 50%; }
+  100% { background-position: 260% 50%, -200% 50%; }
+}
+.holo-bands {
+  background-image:
+    repeating-linear-gradient(100deg,
+      #ff2d9a 0 7%, #ff7a00 7% 14%, #ffe000 14% 21%, #46ff8f 21% 28%,
+      #22e0ff 28% 35%, #9b6bff 35% 42%, #ff2d9a 42% 49%),
+    repeating-linear-gradient(255deg,
+      #22e0ff 0 9%, #9b6bff 9% 18%, #ff2d9a 18% 27%, #ffe000 27% 36%, #22e0ff 36% 45%);
+  background-size: 260% 100%, 200% 100%;
+  background-blend-mode: screen;
+  filter: saturate(1.7) brightness(1.12) contrast(1.05);
+  animation: holo-drift 10s linear infinite;
+}
+/* pointer-reactive rainbow (chunky) */
+.holo-react {
+  background-image: repeating-linear-gradient(112deg,
+    #ff2d9a 0 8%, #ff7a00 8% 16%, #ffe000 16% 24%, #46ff8f 24% 32%,
+    #22e0ff 32% 40%, #9b6bff 40% 48%, #ff2d9a 48% 56%);
+  background-size: 300% 100%;
+  filter: saturate(1.8) brightness(1.2);
+}
+/* brushed-foil metal texture — fine diagonal streaks that catch the light */
+.foil-tex {
+  background-image:
+    repeating-linear-gradient(118deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(118deg, rgba(0,0,0,0.18) 0 1px, transparent 1px 5px);
+  mix-blend-mode: overlay;
+}
+/* glitter sparkle field */
+.holo-glitter {
+  background-image:
+    radial-gradient(circle, #ffffff 0 1px, transparent 1.6px),
+    radial-gradient(circle, #ffe000 0 1px, transparent 1.7px),
+    radial-gradient(circle, #22e0ff 0 1px, transparent 1.7px),
+    radial-gradient(circle, #ff2d9a 0 1px, transparent 1.6px);
+  background-size: 9px 9px, 13px 13px, 16px 16px, 11px 11px;
+  background-position: 0 0, 4px 6px, 8px 3px, 2px 9px;
+  filter: brightness(1.5);
+}
+@keyframes glare-sweep {
+  0%   { transform: translateX(-130%) rotate(20deg); opacity: 0; }
+  30%  { opacity: 0.95; }
+  100% { transform: translateX(340%) rotate(20deg); opacity: 0; }
+}
+.glare-sweep {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+  animation: glare-sweep 1.1s ease-out both;
+}
+
+/* ================= marquee ================= */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track { display: inline-flex; white-space: nowrap; animation: marquee 22s linear infinite; }
+.marquee-track.reverse { animation-direction: reverse; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .holo-bands, .glare-sweep { animation: none; }
+}
