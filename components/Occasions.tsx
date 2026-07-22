@@ -56,6 +56,7 @@ export function Occasions() {
                   gift={{ occ: o.key, amt: AMTS[i], token: TOKS[i], to: "you", from: "wrapped", msg: o.blurb }}
                   interactive={false}
                   hint={false}
+                  holo={o.holo}
                 />
               </div>
             </motion.div>

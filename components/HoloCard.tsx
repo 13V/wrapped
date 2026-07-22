@@ -21,6 +21,7 @@ export function HoloCard({
   float = false,
   reveal = false,
   hint = true,
+  holo,
   className = "",
 }: {
   gift: Gift;
@@ -28,6 +29,8 @@ export function HoloCard({
   float?: boolean;
   reveal?: boolean;
   hint?: boolean;
+  /** distinct per-occasion holographic band palette; omit for the full-rainbow default */
+  holo?: string[];
   className?: string;
 }) {
   const o = OCCASIONS[gift.occ as OccasionKey] ?? OCCASIONS.birthday;
@@ -74,6 +77,17 @@ export function HoloCard({
 
   const face = "absolute inset-0 rounded-[24px] overflow-hidden [backface-visibility:hidden] border-[3px] border-white/15";
 
+  const bandStyle: React.CSSProperties | undefined = holo
+    ? {
+        backgroundImage: `repeating-linear-gradient(100deg, ${holo
+          .map((c, i) => `${c} ${i * 7}% ${(i + 1) * 7}%`)
+          .join(", ")})`,
+        backgroundSize: "260% 100%",
+        filter: "saturate(1.6) brightness(1.08)",
+        animation: reduce ? undefined : "grad-shift 9s linear infinite",
+      }
+    : undefined;
+
   return (
     <motion.div
       className={className}
@@ -101,8 +115,12 @@ export function HoloCard({
       >
         {/* ---------- FRONT ---------- */}
         <div className={face} style={{ background: DARK }}>
-          <div className="absolute inset-0 mix-blend-screen" style={{ background: `linear-gradient(150deg, ${o.c1}, ${o.c2})`, opacity: 0.34 }} />
-          <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />
+          <div className="absolute inset-0 mix-blend-screen" style={{ background: `linear-gradient(150deg, ${o.c1}, ${o.c2})`, opacity: holo ? 0.46 : 0.34 }} />
+          {bandStyle ? (
+            <div className="absolute inset-0 opacity-70 mix-blend-screen" style={bandStyle} />
+          ) : (
+            <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />
+          )}
           <motion.div className="holo-react absolute inset-0 mix-blend-screen" style={{ backgroundPosition: reactPos, opacity: reactOpacity }} />
           <div className="foil-tex absolute inset-0 opacity-70" />
           <motion.div
@@ -148,7 +166,11 @@ export function HoloCard({
         {/* ---------- BACK ---------- */}
         <div className={face} style={{ transform: "rotateY(180deg)", background: DARK }}>
           <div className="absolute inset-0 mix-blend-screen" style={{ background: `linear-gradient(150deg, ${o.c2}, ${o.c1})`, opacity: 0.3 }} />
-          <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />
+          {bandStyle ? (
+            <div className="absolute inset-0 opacity-70 mix-blend-screen" style={bandStyle} />
+          ) : (
+            <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />
+          )}
           <div className="foil-tex absolute inset-0 opacity-60" />
           <div className="holo-glitter absolute inset-0 opacity-45 mix-blend-screen" />
           <div className="relative z-10 flex h-full flex-col items-center justify-center gap-3 p-5 text-center text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
