@@ -6,10 +6,14 @@ import { Occasions } from "@/components/Occasions";
 import { Safe } from "@/components/Safe";
 import { Marquee } from "@/components/Marquee";
 import { ClaimOverlay } from "@/components/ClaimOverlay";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { Reveal } from "@/components/Reveal";
+import { Magnetic } from "@/components/Magnetic";
 
 export default function Home() {
   return (
     <>
+      <ScrollProgress />
       <Nav />
       <main>
         <Hero />
@@ -27,20 +31,20 @@ export default function Home() {
             <div className="border-b-2 border-ink bg-lime py-2">
               <Marquee items={["send one to the group chat", "gift crypto that slaps", "no seed phrase"]} />
             </div>
-            <div className="p-10 text-center md:p-16">
+            <Reveal className="p-10 text-center md:p-16">
               <h2 className="font-display text-4xl font-black lowercase tracking-tight text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.35)] md:text-6xl">
                 go make someone&apos;s day.
               </h2>
               <p className="mx-auto mt-4 max-w-md text-lg font-semibold text-white/90">
                 the best surprise in someone&apos;s dms is a gift they didn&apos;t see coming.
               </p>
-              <a
+              <Magnetic
                 href="#try"
-                className="mt-8 inline-block rounded-2xl border-2 border-ink bg-ink px-8 py-4 font-display text-xl font-black lowercase text-lime shadow-[6px_6px_0_0_rgba(0,0,0,0.35)] transition-transform hover:-translate-y-1"
+                className="mt-8 inline-block rounded-2xl border-2 border-ink bg-ink px-8 py-4 font-display text-xl font-black lowercase text-lime shadow-[6px_6px_0_0_rgba(0,0,0,0.35)]"
               >
                 wrap a gift →
-              </a>
-            </div>
+              </Magnetic>
+            </Reveal>
           </div>
         </section>
 

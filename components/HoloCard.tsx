@@ -11,6 +11,7 @@ import {
 import { useRef, useState } from "react";
 import { OCCASIONS, type OccasionKey } from "@/lib/occasions";
 import { formatAmount, type Gift } from "@/lib/gift";
+import { SolanaMark, TokenChip } from "./logos";
 
 const DARK = "linear-gradient(150deg, #150e28, #0b0714)";
 
@@ -119,16 +120,24 @@ export function HoloCard({
               {o.tag} · 1 OF 1 · HOLO
             </div>
             <div>
-              <div className="flex items-end gap-1.5">
+              <div className="flex items-end gap-2">
                 <span className="font-display text-5xl font-black leading-none tabular-nums">{formatAmount(gift.amt)}</span>
-                <span className="pb-1 font-mono text-sm font-bold opacity-90">{gift.token}</span>
+                <span className="pb-1"><TokenChip symbol={gift.token} /></span>
               </div>
               <div className="mt-3 flex items-end justify-between gap-2">
                 <div className="min-w-0">
                   <div className="truncate text-sm font-bold lowercase">to {gift.to || "you"}</div>
                   {gift.msg && <div className="truncate text-[11px] font-medium opacity-90">{gift.msg}</div>}
                 </div>
-                <div className="shrink-0 text-[11px] font-bold opacity-90">— {gift.from || "someone"}</div>
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <span
+                    title="Secured on Solana"
+                    className="grid size-8 place-items-center rounded-full border border-white/40 bg-white/10 p-[7px] backdrop-blur-sm"
+                  >
+                    <SolanaMark className="h-full w-full" />
+                  </span>
+                  <span className="text-[11px] font-bold opacity-90">— {gift.from || "someone"}</span>
+                </div>
               </div>
             </div>
           </div>

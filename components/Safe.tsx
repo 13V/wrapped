@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { Reveal } from "./Reveal";
 
 const FEATS = [
   { emoji: "🔒", title: "non-custodial", body: "your money sits in an escrow only the gift link can open. we literally can't touch it.", accent: "var(--color-cyan)" },
@@ -16,10 +17,12 @@ export function Safe() {
           className="rounded-[32px] border-[3px] border-ink p-8 shadow-hard-lg md:p-12"
           style={{ background: "#100c18" }}
         >
-          <p className="font-mono text-sm font-bold uppercase text-lime">but is it safe tho</p>
-          <h2 className="mt-2 max-w-2xl font-display text-4xl font-black lowercase tracking-tight text-white md:text-5xl">
-            yeah. it&apos;s locked until they open it.
-          </h2>
+          <Reveal>
+            <p className="font-mono text-sm font-bold uppercase text-lime">but is it safe tho</p>
+            <h2 className="mt-2 max-w-2xl font-display text-4xl font-black lowercase tracking-tight text-white md:text-5xl">
+              yeah. it&apos;s locked until they open it.
+            </h2>
+          </Reveal>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {FEATS.map((f, i) => (
               <motion.div

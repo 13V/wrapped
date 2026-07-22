@@ -2,20 +2,24 @@
 
 import { motion } from "motion/react";
 import { HoloCard } from "./HoloCard";
+import { Reveal } from "./Reveal";
 import { OCCASION_LIST } from "@/lib/occasions";
 
 const AMTS = ["50", "100", "25", "10", "42"];
+const TOKS = ["SOL", "USDC", "BONK", "SOL", "WIF"];
 
 export function Occasions() {
   return (
     <section id="occasions" className="relative z-10 px-4 py-20">
       <div className="mx-auto max-w-6xl">
-        <h2 className="mb-3 font-display text-4xl font-black lowercase tracking-tight text-text md:text-6xl">
-          a card for every <span className="text-pink">main-character</span> moment.
-        </h2>
-        <p className="mb-12 max-w-lg text-lg font-medium text-muted">
-          each one&apos;s a 1-of-1 holographic drop. yes, even the rug one.
-        </p>
+        <Reveal>
+          <h2 className="mb-3 font-display text-4xl font-black lowercase tracking-tight text-text md:text-6xl">
+            a card for every <span className="text-pink">main-character</span> moment.
+          </h2>
+          <p className="mb-12 max-w-lg text-lg font-medium text-muted">
+            each one&apos;s a 1-of-1 holographic drop. yes, even the rug one.
+          </p>
+        </Reveal>
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
           {OCCASION_LIST.map((o, i) => (
             <motion.div
@@ -27,7 +31,7 @@ export function Occasions() {
               whileHover={{ rotate: 0, y: -8, scale: 1.03 }}
             >
               <HoloCard
-                gift={{ occ: o.key, amt: AMTS[i], token: "USDC", to: "you", from: "wrapped", msg: o.blurb }}
+                gift={{ occ: o.key, amt: AMTS[i], token: TOKS[i], to: "you", from: "wrapped", msg: o.blurb }}
                 interactive={false}
               />
             </motion.div>

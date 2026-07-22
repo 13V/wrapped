@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { Reveal } from "./Reveal";
 
 const STEPS = [
   { n: "01", emoji: "🎁", title: "wrap it", body: "pick a vibe, choose any token, add a message. it becomes a 1-of-1 holo card.", bg: "var(--color-pink)", fg: "#fff" },
@@ -12,12 +13,14 @@ export function Steps() {
   return (
     <section id="how" className="relative z-10 px-4 py-20">
       <div className="mx-auto max-w-6xl">
-        <h2 className="mb-3 font-display text-4xl font-black lowercase tracking-tight text-text md:text-6xl">
-          three taps. <span className="text-violet">done.</span>
-        </h2>
-        <p className="mb-12 max-w-lg text-lg font-medium text-muted">
-          gifting crypto used to mean addresses and prayers. now it&apos;s just… a gift.
-        </p>
+        <Reveal>
+          <h2 className="mb-3 font-display text-4xl font-black lowercase tracking-tight text-text md:text-6xl">
+            three taps. <span className="text-violet">done.</span>
+          </h2>
+          <p className="mb-12 max-w-lg text-lg font-medium text-muted">
+            gifting crypto used to mean addresses and prayers. now it&apos;s just… a gift.
+          </p>
+        </Reveal>
         <div className="grid gap-6 md:grid-cols-3">
           {STEPS.map((s, i) => (
             <motion.div
