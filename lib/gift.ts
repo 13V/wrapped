@@ -7,6 +7,9 @@ export interface Gift {
   to: string;
   from: string;
   msg: string;
+  /** custom token (gifted by contract address): logo URL + mint */
+  logo?: string;
+  mint?: string;
 }
 
 export function formatAmount(a: string | number): string {

@@ -8,6 +8,7 @@ import { OCCASION_LIST, type OccasionKey } from "@/lib/occasions";
 import { encodeGift, buildGiftLink, quoteFeeSol, type Gift } from "@/lib/gift";
 import { fireConfetti } from "@/lib/confetti";
 import { Qr } from "./Qr";
+import type { ResolvedToken } from "@/lib/tokens";
 
 type RealState =
   | { s: "idle" }
@@ -34,12 +35,34 @@ export function TryIt() {
   const [deliverTo, setDeliverTo] = useState("");
   const [del, setDel] = useState<{ busy?: boolean; note?: string; tone?: "info" | "warn" }>({});
 
-  const gift: Gift = { occ, amt, token, to, from, msg };
+  const [ca, setCa] = useState("");
+  const [custom, setCustom] = useState<ResolvedToken | null>(null);
+  const [caState, setCaState] = useState<"idle" | "loading" | "error">("idle");
+
+  const gift: Gift = custom
+    ? { occ, amt, token: custom.symbol, to, from, msg, logo: custom.logo, mint: custom.mint }
+    : { occ, amt, token, to, from, msg };
   const link = useMemo(
     () => buildGiftLink(gift),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [occ, amt, token, to, from, msg],
+    [occ, amt, token, to, from, msg, custom?.mint],
   );
+
+  async function resolveCA() {
+    const q = ca.trim();
+    const { looksLikeMint, resolveToken } = await import("@/lib/tokens");
+    if (!looksLikeMint(q)) { setCaState("error"); return; }
+    setCaState("loading");
+    try {
+      const tok = await resolveToken(q);
+      if (!tok) { setCaState("error"); return; }
+      setCustom(tok);
+      setCaState("idle");
+      setSent(false);
+    } catch {
+      setCaState("error");
+    }
+  }
 
   function send() {
     setSent(true);
@@ -196,7 +219,8 @@ export function TryIt() {
             </div>
             <div>
               <label className="mb-2 block font-mono text-xs font-bold uppercase text-muted">token</label>
-              <select className={inputCls} value={token} onChange={(e) => { setToken(e.target.value); setSent(false); }}>
+              <select className={inputCls} value={custom ? "" : token} onChange={(e) => { setToken(e.target.value); setCustom(null); setSent(false); }}>
+                {custom && <option value="" className="bg-surface">{custom.symbol} (custom)</option>}
                 {["USDC", "SOL", "BONK", "WIF"].map((t) => <option key={t} className="bg-surface">{t}</option>)}
               </select>
             </div>
@@ -215,6 +239,46 @@ export function TryIt() {
             <label className="mb-2 block font-mono text-xs font-bold uppercase text-muted">message</label>
             <input className={inputCls} value={msg} maxLength={80}
               onChange={(e) => { setMsg(e.target.value); setSent(false); }} />
+          </div>
+
+          {/* gift any Solana token by contract address */}
+          <div className="mt-4">
+            <label className="mb-2 block font-mono text-xs font-bold uppercase text-muted">
+              or gift any token — paste a contract address
+            </label>
+            {custom ? (
+              <div className="flex items-center gap-2.5 rounded-xl border border-line bg-surface px-3 py-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={custom.logo} alt="" width={28} height={28} className="size-7 rounded-full bg-white/10 object-cover ring-1 ring-line" />
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-bold text-text">
+                    {custom.name} <span className="font-normal text-muted">· {custom.symbol}</span>
+                  </div>
+                  <div className="truncate font-mono text-[10px] text-muted">{custom.mint.slice(0, 6)}…{custom.mint.slice(-6)}</div>
+                </div>
+                <button onClick={() => { setCustom(null); setCa(""); }}
+                  className="shrink-0 rounded-lg border border-line px-2.5 py-1 text-xs font-bold lowercase text-muted hover:text-text">
+                  clear
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  className={inputCls + " font-mono text-sm"}
+                  value={ca}
+                  placeholder="token mint address…"
+                  onChange={(e) => { setCa(e.target.value); setCaState("idle"); }}
+                  onKeyDown={(e) => { if (e.key === "Enter") resolveCA(); }}
+                />
+                <button onClick={resolveCA} disabled={caState === "loading"}
+                  className="shrink-0 rounded-xl border-2 border-ink bg-cyan px-4 py-2 text-sm font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5 disabled:opacity-70">
+                  {caState === "loading" ? "…" : "add"}
+                </button>
+              </div>
+            )}
+            {caState === "error" && (
+              <p className="mt-1.5 font-mono text-[11px] font-bold text-pink">couldn’t find that token — check the address.</p>
+            )}
           </div>
 
           <motion.button

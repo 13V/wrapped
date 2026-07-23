@@ -152,7 +152,7 @@ export function HoloCard({
             <div>
               <div className="flex items-end gap-2">
                 <span className="font-display text-5xl font-black leading-none tabular-nums">{formatAmount(gift.amt)}</span>
-                <span className="pb-1"><TokenChip symbol={gift.token} /></span>
+                <span className="pb-1"><TokenChip symbol={gift.token} logo={gift.logo} /></span>
               </div>
               <div className="mt-3 flex items-end justify-between gap-2">
                 <div className="min-w-0">

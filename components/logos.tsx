@@ -51,18 +51,26 @@ export const TOKENS: Record<string, { color: string; ring: string }> = {
   WIF: { color: "#E8A0BF", ring: "#ffffff" },
 };
 
-/** A tiny coin chip: the Solana mark for SOL, a brand-color coin otherwise. */
-export function TokenChip({ symbol }: { symbol: string }) {
+/** Official token icons served from /public/tokens. */
+const TOKEN_LOGOS: Record<string, string> = {
+  USDC: "/tokens/usdc.svg",
+  BONK: "/tokens/bonk.png",
+  WIF: "/tokens/wif.png",
+};
+
+/** A tiny coin chip: the Solana mark for SOL, an icon for known/custom tokens. */
+export function TokenChip({ symbol, logo }: { symbol: string; logo?: string }) {
   const t = TOKENS[symbol] ?? { color: "#ffffff", ring: "#ffffff" };
+  const src = logo || TOKEN_LOGOS[symbol];
   return (
     <span className="inline-flex items-center gap-1.5">
-      {symbol === "SOL" ? (
+      {symbol === "SOL" && !logo ? (
         <span className="grid size-4 place-items-center rounded-full bg-[#0b0714] p-[3px] ring-1 ring-white/40">
           <SolanaMark className="h-full w-full" />
         </span>
-      ) : symbol === "USDC" ? (
+      ) : src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src="/tokens/usdc.svg" alt="USDC" width={16} height={16} className="size-4 rounded-full ring-1 ring-white/40" />
+        <img src={src} alt={symbol} width={16} height={16} className="size-4 rounded-full bg-white/10 object-cover ring-1 ring-white/40" />
       ) : (
         <span
           className="size-4 rounded-full ring-1 ring-white/40"
