@@ -11,7 +11,7 @@ import {
 import { useRef, useState } from "react";
 import { OCCASIONS, type OccasionKey } from "@/lib/occasions";
 import { formatAmount, type Gift } from "@/lib/gift";
-import { SolanaMark, TokenChip } from "./logos";
+import { SolanaMark, TokenChip, PresentMark } from "./logos";
 
 const DARK = "linear-gradient(150deg, #150e28, #0b0714)";
 const RAINBOW = ["#ff2d9a", "#ff7a00", "#ffe000", "#46ff8f", "#22e0ff", "#9b6bff", "#ff2d9a"];
@@ -146,8 +146,8 @@ export function HoloCard({
               <span className="font-display text-[15px] font-extrabold tracking-tight">WRAPPED</span>
               <span className="grid size-9 place-items-center rounded-full border-2 border-white/70 bg-white/20 text-lg backdrop-blur-sm">{o.emoji}</span>
             </div>
-            <div className="rotate-[-7deg] self-start rounded-md border-2 border-ink bg-lime px-2 py-0.5 font-mono text-[10px] font-bold text-ink [text-shadow:none]">
-              {o.tag} · 1 OF 1 · HOLO
+            <div className="flex justify-center py-1">
+              <PresentMark className="w-[44%] drop-shadow-[0_10px_16px_rgba(0,0,0,0.45)]" />
             </div>
             <div>
               <div className="flex items-end gap-2">
