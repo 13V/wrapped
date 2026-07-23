@@ -19,6 +19,12 @@ export function moonpayBaseUrl(): string {
     : "https://buy-sandbox.moonpay.com";
 }
 
+export function moonpaySellBaseUrl(): string {
+  return ENV === "production"
+    ? "https://sell.moonpay.com"
+    : "https://sell-sandbox.moonpay.com";
+}
+
 export interface BuyParams {
   /** Solana address the purchased crypto is delivered to. */
   walletAddress?: string;
@@ -38,12 +44,33 @@ export function buildBuyUrl(p: BuyParams): string {
   return `${moonpayBaseUrl()}?${qs.toString()}`;
 }
 
-/** Build → sign (server) → open the MoonPay buy widget in a popup. */
-export async function openMoonPayBuy(p: BuyParams): Promise<void> {
+export interface SellParams {
+  /** The crypto being sold, e.g. "sol". */
+  baseCurrencyCode?: string;
+  /** Amount of crypto to sell. */
+  amount?: number;
+  /** Fiat to receive, e.g. "usd". */
+  quoteCurrencyCode?: string;
+  /** Address funds are refunded to if the sale doesn't complete. */
+  refundWalletAddress?: string;
+  redirectURL?: string;
+}
+
+export function buildSellUrl(p: SellParams): string {
+  const qs = new URLSearchParams({ apiKey: API_KEY });
+  if (p.baseCurrencyCode) qs.set("baseCurrencyCode", p.baseCurrencyCode);
+  if (p.amount != null) qs.set("baseCurrencyAmount", String(p.amount));
+  if (p.quoteCurrencyCode) qs.set("quoteCurrencyCode", p.quoteCurrencyCode);
+  if (p.refundWalletAddress) qs.set("refundWalletAddress", p.refundWalletAddress);
+  if (p.redirectURL) qs.set("redirectURL", p.redirectURL);
+  return `${moonpaySellBaseUrl()}?${qs.toString()}`;
+}
+
+async function signAndOpen(unsignedUrl: string): Promise<void> {
   const res = await fetch("/api/moonpay/sign", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ url: buildBuyUrl(p) }),
+    body: JSON.stringify({ url: unsignedUrl }),
   });
   if (!res.ok) {
     const { error } = await res.json().catch(() => ({ error: "signing failed" }));
@@ -51,4 +78,14 @@ export async function openMoonPayBuy(p: BuyParams): Promise<void> {
   }
   const { url } = await res.json();
   window.open(url, "moonpay", "width=460,height=760");
+}
+
+/** Build → sign (server) → open the MoonPay buy widget in a popup. */
+export async function openMoonPayBuy(p: BuyParams): Promise<void> {
+  await signAndOpen(buildBuyUrl(p));
+}
+
+/** Build → sign (server) → open the MoonPay sell (cash-out) widget. */
+export async function openMoonPaySell(p: SellParams): Promise<void> {
+  await signAndOpen(buildSellUrl(p));
 }

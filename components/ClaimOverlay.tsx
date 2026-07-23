@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import type { Keypair } from "@solana/web3.js";
 import { HoloCard } from "./HoloCard";
 import { parseGiftHash, type Gift } from "@/lib/gift";
 import { fireConfetti } from "@/lib/confetti";
@@ -16,6 +17,12 @@ export function ClaimOverlay() {
   const [claimed, setClaimed] = useState<Claimed | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+
+  // Post-claim "what now?" hub: swap to USDC / cash out / keep.
+  const recipientKey = useRef<Keypair | null>(null);
+  const [quote, setQuote] = useState<number | null>(null);
+  const [hub, setHub] = useState<{ note: string; tone: "info" | "warn"; sig?: string } | null>(null);
+  const [hubBusy, setHubBusy] = useState<"" | "swap" | "cash">("");
 
   useEffect(() => {
     const read = () => {
@@ -39,9 +46,16 @@ export function ClaimOverlay() {
       setBusy(true);
       try {
         const { decodeKey, claimRealGift, toSol } = await import("@/lib/solana");
-        const { recipient, lamports, sig } = await claimRealGift(decodeKey(keyStr));
-        setClaimed({ kind: "real", recipient, amount: toSol(lamports), sig });
+        const { recipient, recipientKey: rk, lamports, sig } = await claimRealGift(decodeKey(keyStr));
+        const amount = toSol(lamports);
+        recipientKey.current = rk;
+        setClaimed({ kind: "real", recipient, amount, sig });
         fireConfetti(0.5, 0.42);
+        // fetch a live swap quote for the "what now?" hub (non-blocking)
+        import("@/lib/jupiter")
+          .then((j) => j.quoteSolToUsdc(amount))
+          .then((q) => setQuote(q.outAmount))
+          .catch(() => {});
       } catch (e) {
         setError(e instanceof Error ? e.message : "Claim failed — try again.");
       } finally {
@@ -59,7 +73,59 @@ export function ClaimOverlay() {
   function close() {
     setGift(null);
     setKeyStr(null);
+    setQuote(null);
+    setHub(null);
+    recipientKey.current = null;
     if (location.hash.startsWith("#g=")) history.replaceState(null, "", location.pathname);
+  }
+
+  // Hub: swap the claimed SOL to USDC (mainnet execution; live quote elsewhere).
+  async function swapToUsdc() {
+    if (!claimed || claimed.kind !== "real" || !recipientKey.current) return;
+    setHub(null);
+    const { swapExecutable, swapSolToUsdc } = await import("@/lib/jupiter");
+    if (!swapExecutable()) {
+      setHub({
+        tone: "info",
+        note: `That's a live rate${quote != null ? ` (≈ ${quote.toFixed(2)} USDC)` : ""}. Swaps execute on mainnet — flip the cluster to go live.`,
+      });
+      return;
+    }
+    setHubBusy("swap");
+    try {
+      const sig = await swapSolToUsdc(recipientKey.current, claimed.amount);
+      setHub({ tone: "info", note: `Swapped to USDC.`, sig });
+    } catch (e) {
+      setHub({ tone: "warn", note: e instanceof Error ? e.message : "Swap failed." });
+    } finally {
+      setHubBusy("");
+    }
+  }
+
+  // Hub: cash out to card/bank via MoonPay's off-ramp.
+  async function cashOut() {
+    if (!claimed || claimed.kind !== "real") return;
+    setHub(null);
+    const { moonpayEnabled, openMoonPaySell } = await import("@/lib/moonpay");
+    if (!moonpayEnabled()) {
+      setHub({ tone: "warn", note: "Cash-out needs MoonPay keys (NEXT_PUBLIC_MOONPAY_API_KEY + MOONPAY_SECRET_KEY)." });
+      return;
+    }
+    setHubBusy("cash");
+    try {
+      await openMoonPaySell({
+        baseCurrencyCode: "sol",
+        amount: claimed.amount,
+        quoteCurrencyCode: "usd",
+        refundWalletAddress: claimed.recipient,
+        redirectURL: typeof window !== "undefined" ? location.origin : undefined,
+      });
+      setHub({ tone: "info", note: "MoonPay cash-out opened — follow it to send SOL and receive cash." });
+    } catch (e) {
+      setHub({ tone: "warn", note: e instanceof Error ? e.message : "Could not open MoonPay." });
+    } finally {
+      setHubBusy("");
+    }
   }
 
   const cluster = process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet";
@@ -128,6 +194,49 @@ export function ClaimOverlay() {
                         className="inline-block font-mono text-[11px] font-bold text-violet underline hover:text-ink">
                         view the claim on explorer ↗
                       </a>
+
+                      {/* what now? — swap / cash out / keep */}
+                      <div className="!mt-4 rounded-2xl border-2 border-ink bg-surface/70 p-3">
+                        <p className="mb-2 font-mono text-[10px] font-bold uppercase tracking-wide text-muted">
+                          what now?{quote != null && <span className="text-violet"> · ≈ {quote.toFixed(2)} usdc</span>}
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-2">
+                          <button
+                            onClick={swapToUsdc}
+                            disabled={hubBusy === "swap"}
+                            className="rounded-xl border-2 border-ink bg-violet px-3.5 py-2 text-xs font-extrabold lowercase text-white shadow-[3px_3px_0_0_var(--color-lime)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                          >
+                            {hubBusy === "swap" ? "swapping…" : "swap to usdc"}
+                          </button>
+                          <button
+                            onClick={cashOut}
+                            disabled={hubBusy === "cash"}
+                            className="rounded-xl border-2 border-ink bg-cyan px-3.5 py-2 text-xs font-extrabold lowercase text-ink shadow-[3px_3px_0_0_var(--color-pink)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                          >
+                            {hubBusy === "cash" ? "opening…" : "cash out 💳"}
+                          </button>
+                          <button
+                            onClick={close}
+                            className="rounded-xl border-2 border-ink bg-surface px-3.5 py-2 text-xs font-extrabold lowercase text-text transition-transform hover:-translate-y-0.5"
+                          >
+                            keep it
+                          </button>
+                        </div>
+                        {hub && (
+                          <div className="mt-2">
+                            <p className={`font-mono text-[11px] ${hub.tone === "warn" ? "font-bold text-pink" : "text-muted"}`}>
+                              {hub.note}
+                            </p>
+                            {hub.sig && (
+                              <a href={`https://explorer.solana.com/tx/${hub.sig}?cluster=${cluster}`}
+                                target="_blank" rel="noreferrer"
+                                className="font-mono text-[11px] font-bold text-violet underline hover:text-ink">
+                                view swap ↗
+                              </a>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ) : (
                     <p className="font-mono text-xs text-muted">

@@ -7,6 +7,7 @@ import { Reveal } from "./Reveal";
 import { OCCASION_LIST, type OccasionKey } from "@/lib/occasions";
 import { encodeGift, buildGiftLink, quoteFeeSol, type Gift } from "@/lib/gift";
 import { fireConfetti } from "@/lib/confetti";
+import { Qr } from "./Qr";
 
 type RealState =
   | { s: "idle" }
@@ -30,6 +31,8 @@ export function TryIt() {
   const [real, setReal] = useState<RealState>({ s: "idle" });
   const [realCopied, setRealCopied] = useState(false);
   const [mp, setMp] = useState<{ note: string; link?: string; tone: "info" | "warn" } | null>(null);
+  const [deliverTo, setDeliverTo] = useState("");
+  const [del, setDel] = useState<{ busy?: boolean; note?: string; tone?: "info" | "warn" }>({});
 
   const gift: Gift = { occ, amt, token, to, from, msg };
   const link = useMemo(
@@ -127,6 +130,26 @@ export function TryIt() {
       setRealCopied(true);
       setTimeout(() => setRealCopied(false), 1500);
     } catch {}
+  }
+
+  // Deliver the gift link by email or SMS (channel inferred from the input).
+  async function sendDelivery(link: string) {
+    const to = deliverTo.trim();
+    if (!to) return;
+    const channel = to.includes("@") ? "email" : "sms";
+    setDel({ busy: true });
+    try {
+      const res = await fetch("/api/deliver", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ channel, to, link, from, message: msg }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) setDel({ note: `sent via ${channel} ✓`, tone: "info" });
+      else setDel({ note: data.error || "couldn’t send", tone: "warn" });
+    } catch (e) {
+      setDel({ note: e instanceof Error ? e.message : "couldn’t send", tone: "warn" });
+    }
   }
 
   const inputCls =
@@ -317,6 +340,39 @@ export function TryIt() {
                     className="rounded-xl border border-line bg-surface px-4 py-2 text-sm font-extrabold lowercase text-text transition-transform hover:-translate-y-0.5">
                     funded ✓ view tx ↗
                   </a>
+                </div>
+
+                {/* deliver it: QR + email/SMS */}
+                <div className="mt-4 flex flex-wrap items-start gap-4 border-t border-line/60 pt-4">
+                  <div className="shrink-0"><Qr value={real.link} /></div>
+                  <div className="min-w-[200px] flex-1">
+                    <label className="mb-1.5 block font-mono text-[10px] font-bold uppercase text-muted">
+                      or send it directly
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        value={deliverTo}
+                        onChange={(e) => { setDeliverTo(e.target.value); setDel({}); }}
+                        placeholder="email or phone"
+                        className={inputCls + " py-2 text-sm"}
+                      />
+                      <button
+                        onClick={() => sendDelivery(real.link)}
+                        disabled={del.busy}
+                        className="shrink-0 rounded-xl border-2 border-ink bg-pink px-4 py-2 text-sm font-extrabold lowercase text-white shadow-[3px_3px_0_0_var(--color-cyan)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                      >
+                        {del.busy ? "sending…" : "send"}
+                      </button>
+                    </div>
+                    {del.note && (
+                      <p className={`mt-2 font-mono text-[11px] ${del.tone === "warn" ? "font-bold text-pink" : "text-muted"}`}>
+                        {del.note}
+                      </p>
+                    )}
+                    <p className="mt-2 font-mono text-[10px] leading-relaxed text-muted">
+                      scan in person, or text/email the link. bearer link — best for small gifts; escrow hardens larger ones.
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             )}

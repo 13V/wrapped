@@ -164,7 +164,7 @@ export async function createRealGift(sol: number): Promise<{
  */
 export async function claimRealGift(
   key: Keypair,
-): Promise<{ recipient: string; lamports: number; sig: string }> {
+): Promise<{ recipient: string; recipientKey: Keypair; lamports: number; sig: string }> {
   const c = conn();
   const bal = await c.getBalance(key.publicKey);
   const lamports = bal - FEE_LAMPORTS;
@@ -179,5 +179,10 @@ export async function claimRealGift(
     }),
   );
   const sig = await sendAndConfirmTransaction(c, tx, [key]);
-  return { recipient: recipient.publicKey.toBase58(), lamports, sig };
+  return {
+    recipient: recipient.publicKey.toBase58(),
+    recipientKey: recipient,
+    lamports,
+    sig,
+  };
 }

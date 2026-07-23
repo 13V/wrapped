@@ -20,8 +20,11 @@ gifting, built as an interactive demo.
   it funds a throwaway "link wallet" with real SOL, hides its key in the link,
   and the recipient's browser sweeps it into a fresh wallet on claim. Real
   transactions, real explorer links, no backend. See below.
-- **Recipient claim flow** — opening a gift link (`#g=…`) shows the arrival and
-  a claim-to-wallet moment.
+- **Recipient claim flow** — opening a gift link (`#g=…`) shows the arrival, a
+  claim-to-wallet moment, and a **"what now?"** hub to **swap to USDC** (Jupiter)
+  or **cash out** (MoonPay off-ramp).
+- **Deliver any way** — copy/paste, a scannable **QR**, or send the link by
+  **email** (Resend) / **SMS** (Twilio). See [docs/DELIVERY.md](docs/DELIVERY.md).
 - Crisp light UI with neo-brutalist chunk; the foil cards keep their own dark
   base so they pop against the page.
 
@@ -57,6 +60,7 @@ app/
   page.tsx          assembles the sections
   globals.css       theme tokens + holographic foil + marquee
   api/moonpay/sign  server-side MoonPay widget URL signer (secret stays server)
+  api/deliver       email (Resend) + SMS (Twilio) gift-link delivery
 components/
   HoloCard.tsx      the interactive holographic card (the centerpiece)
   PackRip.tsx       the sealed foil pack → rip-to-reveal
@@ -67,8 +71,9 @@ lib/
   occasions.ts      occasion series (colors, emoji, copy)
   gift.ts           gift type + base64url link encode/decode + fee policy
   solana.ts         real on-chain gifting (bearer-link create/claim + fee)
-  moonpay.ts        MoonPay buy-widget launcher (client)
+  moonpay.ts        MoonPay buy + sell (off-ramp) launcher (client)
   moonpay-sign.ts   MoonPay URL HMAC signer (server)
+  jupiter.ts        Jupiter swap — SOL→USDC quote + swap (client)
   confetti.ts       canvas confetti burst
 scripts/
   gift-roundtrip.mjs  CLI proof of the wrap → claim flow

@@ -123,17 +123,38 @@ signing <https://dev.moonpay.com/widget/on-ramp/customization/url-signing.md>
 
 ---
 
+## 3. Recipient-side: swap + cash-out — 🟡 SCAFFOLDED
+
+The claim screen ends on a **"what now?"** hub, so the moment the recipient has
+funds we monetize the next action too (see [DELIVERY.md](DELIVERY.md)):
+
+- **Swap to USDC** (`lib/jupiter.ts`) — Jupiter best-route swap. A live rate on
+  the claim screen; execution on mainnet. Optional swap fee via
+  `NEXT_PUBLIC_WRAPPED_SWAP_FEE_BPS` (Jupiter's `platformFeeBps`) — revenue on
+  the recipient side.
+- **Cash out** (`lib/moonpay.ts` → `openMoonPaySell`) — MoonPay **off-ramp**,
+  same server-signed widget as the buy flow. Earns the MoonPay affiliate fee
+  again.
+
+This is the retention hook: a recipient who swaps or cashes out (or keeps a
+durable wallet) is one who comes back — and every touch is a fee.
+
+---
+
 ## Stacked take on a $50 gift
 
 | Lever | Rate | Take |
 | --- | --- | --- |
-| On-ramp affiliate (MoonPay) | ~0.5–1% | ~$0.35 |
+| On-ramp affiliate (MoonPay buy) | ~0.5–1% | ~$0.35 |
 | Platform fee (live) | 1.5% + $0.99-equiv | ~$1.70 |
+| Swap fee (recipient → USDC) | ~0.2–0.5% | ~$0.15 |
+| Off-ramp affiliate (MoonPay sell) | ~0.5–1% | ~$0.30 |
 | Premium card (future, ~30% attach) | $1.99 | ~$0.60 avg |
 
-→ **~$2.50–3 per $50 gift, ~100% gross margin.** The growth flywheel: every
-gift is a link to a new person who opens a wallet to claim → the recipient
-becomes a sender. The product is its own distribution.
+→ **~$3 per $50 gift, ~100% gross margin**, and the recipient-side lines repeat
+each time they swap or cash out. The growth flywheel: every gift is a link to a
+new person who opens a wallet to claim → the recipient becomes a sender. The
+product is its own distribution.
 
 ## Deliberately *not* doing (early)
 
