@@ -60,6 +60,9 @@ export function TokenChip({ symbol }: { symbol: string }) {
         <span className="grid size-4 place-items-center rounded-full bg-[#0b0714] p-[3px] ring-1 ring-white/40">
           <SolanaMark className="h-full w-full" />
         </span>
+      ) : symbol === "USDC" ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src="/tokens/usdc.svg" alt="USDC" width={16} height={16} className="size-4 rounded-full ring-1 ring-white/40" />
       ) : (
         <span
           className="size-4 rounded-full ring-1 ring-white/40"
