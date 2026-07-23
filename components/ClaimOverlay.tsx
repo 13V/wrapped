@@ -159,7 +159,7 @@ export function ClaimOverlay() {
               transition={{ type: "spring", stiffness: 140, damping: 14 }}
               className="mx-auto mt-6 w-[260px]"
             >
-              <HoloCard gift={gift} interactive float reveal />
+              <HoloCard gift={gift} interactive float reveal opened={!!claimed} />
             </motion.div>
 
             {gift.msg && <p className="mt-5 font-medium italic text-muted">&ldquo;{gift.msg}&rdquo;</p>}
