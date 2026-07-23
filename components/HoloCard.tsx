@@ -14,6 +14,7 @@ import { formatAmount, type Gift } from "@/lib/gift";
 import { SolanaMark, TokenChip } from "./logos";
 
 const DARK = "linear-gradient(150deg, #150e28, #0b0714)";
+const RAINBOW = ["#ff2d9a", "#ff7a00", "#ffe000", "#46ff8f", "#22e0ff", "#9b6bff", "#ff2d9a"];
 
 export function HoloCard({
   gift,
@@ -77,16 +78,26 @@ export function HoloCard({
 
   const face = "absolute inset-0 rounded-[24px] overflow-hidden [backface-visibility:hidden] border-[3px] border-white/15";
 
-  const bandStyle: React.CSSProperties | undefined = holo
-    ? {
-        backgroundImage: `repeating-linear-gradient(100deg, ${holo
-          .map((c, i) => `${c} ${i * 7}% ${(i + 1) * 7}%`)
-          .join(", ")})`,
-        backgroundSize: "260% 100%",
-        filter: "saturate(1.6) brightness(1.08)",
-        animation: reduce ? undefined : "grad-shift 9s linear infinite",
-      }
-    : undefined;
+  // Big cards get a rich, saturated full-spectrum rainbow foil (themed by the
+  // occasion tint below); the wall passes a focused per-occasion `holo` palette.
+  const palette = holo ?? RAINBOW;
+  const bandStyle: React.CSSProperties = {
+    backgroundImage: `repeating-linear-gradient(100deg, ${palette
+      .map((c, i) => `${c} ${i * 7}% ${(i + 1) * 7}%`)
+      .join(", ")})`,
+    backgroundSize: "230% 100%",
+    filter: "saturate(2) brightness(1.16) contrast(1.06)",
+    animation: reduce ? undefined : "grad-shift 9s linear infinite",
+  };
+  // a second, cross-angled pass gives the foil real metallic depth
+  const bandStyle2: React.CSSProperties = {
+    backgroundImage: `repeating-linear-gradient(255deg, ${[...palette]
+      .reverse()
+      .map((c, i) => `${c} ${i * 9}% ${(i + 1) * 9}%`)
+      .join(", ")})`,
+    backgroundSize: "200% 100%",
+    filter: "saturate(1.8) brightness(1.1)",
+  };
 
   return (
     <motion.div
@@ -115,19 +126,18 @@ export function HoloCard({
       >
         {/* ---------- FRONT ---------- */}
         <div className={face} style={{ background: DARK }}>
-          <div className="absolute inset-0 mix-blend-screen" style={{ background: `linear-gradient(150deg, ${o.c1}, ${o.c2})`, opacity: holo ? 0.46 : 0.34 }} />
-          {bandStyle ? (
-            <div className="absolute inset-0 opacity-70 mix-blend-screen" style={bandStyle} />
-          ) : (
-            <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />
-          )}
+          <div className="absolute inset-0 mix-blend-screen" style={{ background: `linear-gradient(150deg, ${o.c1}, ${o.c2})`, opacity: 0.38 }} />
+          <div className="absolute inset-0 opacity-[0.82] mix-blend-screen" style={bandStyle} />
+          <div className="absolute inset-0 opacity-40 mix-blend-screen" style={bandStyle2} />
           <motion.div className="holo-react absolute inset-0 mix-blend-screen" style={{ backgroundPosition: reactPos, opacity: reactOpacity }} />
-          <div className="foil-tex absolute inset-0 opacity-70" />
+          <div className="foil-tex absolute inset-0 opacity-60" />
           <motion.div
             className="holo-glitter absolute inset-0 mix-blend-screen"
             style={{ opacity: glitterOpacity, WebkitMaskImage: glitterMask, maskImage: glitterMask }}
           />
           <motion.div className="absolute inset-0 mix-blend-overlay pointer-events-none" style={{ background: glare, opacity: interactive ? hoverS : 0 }} />
+          {/* depth vignette — richer top/bottom so the foil reads like metal and text pops */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(9,6,18,0.34) 0%, transparent 26%, transparent 52%, rgba(9,6,18,0.62) 100%)" }} />
           {reveal && !reduce && <div className="glare-sweep absolute -inset-y-1/2 left-0 z-20 w-1/3 pointer-events-none" />}
 
           {/* content */}
@@ -165,13 +175,10 @@ export function HoloCard({
 
         {/* ---------- BACK ---------- */}
         <div className={face} style={{ transform: "rotateY(180deg)", background: DARK }}>
-          <div className="absolute inset-0 mix-blend-screen" style={{ background: `linear-gradient(150deg, ${o.c2}, ${o.c1})`, opacity: 0.3 }} />
-          {bandStyle ? (
-            <div className="absolute inset-0 opacity-70 mix-blend-screen" style={bandStyle} />
-          ) : (
-            <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />
-          )}
-          <div className="foil-tex absolute inset-0 opacity-60" />
+          <div className="absolute inset-0 mix-blend-screen" style={{ background: `linear-gradient(150deg, ${o.c2}, ${o.c1})`, opacity: 0.42 }} />
+          <div className="absolute inset-0 opacity-80 mix-blend-screen" style={bandStyle} />
+          <div className="absolute inset-0 opacity-40 mix-blend-screen" style={bandStyle2} />
+          <div className="foil-tex absolute inset-0 opacity-50" />
           <div className="holo-glitter absolute inset-0 opacity-45 mix-blend-screen" />
           <div className="relative z-10 flex h-full flex-col items-center justify-center gap-3 p-5 text-center text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.6)]">
             <span className="grid size-16 place-items-center rounded-2xl border-[3px] border-white/70 bg-white/15 text-4xl backdrop-blur-sm">🎁</span>
