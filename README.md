@@ -56,6 +56,7 @@ app/
   layout.tsx        fonts + metadata
   page.tsx          assembles the sections
   globals.css       theme tokens + holographic foil + marquee
+  api/moonpay/sign  server-side MoonPay widget URL signer (secret stays server)
 components/
   HoloCard.tsx      the interactive holographic card (the centerpiece)
   PackRip.tsx       the sealed foil pack → rip-to-reveal
@@ -64,8 +65,10 @@ components/
   Nav.tsx  Marquee.tsx  Magnetic.tsx
 lib/
   occasions.ts      occasion series (colors, emoji, copy)
-  gift.ts           gift type + base64url link encode/decode
-  solana.ts         real on-chain gifting (bearer-link create/claim)
+  gift.ts           gift type + base64url link encode/decode + fee policy
+  solana.ts         real on-chain gifting (bearer-link create/claim + fee)
+  moonpay.ts        MoonPay buy-widget launcher (client)
+  moonpay-sign.ts   MoonPay URL HMAC signer (server)
   confetti.ts       canvas confetti burst
 scripts/
   gift-roundtrip.mjs  CLI proof of the wrap → claim flow
@@ -86,9 +89,12 @@ implements the **bearer-link** model in [`lib/solana.ts`](lib/solana.ts):
 
 **Revenue:** every real wrap also charges a small **platform fee** (default
 1.5% + 0.001 SOL) to the sender, paid atomically to a treasury address — the
-recipient still gets the full gift. Rates and treasury are env-configurable; see
-[docs/MONETIZATION.md](docs/MONETIZATION.md) for the fee policy and the planned
-MoonPay on-ramp revenue share.
+recipient still gets the full gift. There's also a **"💳 buy with card"** path
+that opens a **MoonPay** on-ramp (server-signed widget URL) so senders without
+crypto can fund a gift by card; add `NEXT_PUBLIC_MOONPAY_API_KEY` +
+`MOONPAY_SECRET_KEY` to enable it. Rates, treasury, and MoonPay keys are all
+env-configurable; see [docs/MONETIZATION.md](docs/MONETIZATION.md) for the fee
+policy and the MoonPay revenue-share integration.
 
 It defaults to **devnet** (play money). Point it elsewhere with env vars:
 

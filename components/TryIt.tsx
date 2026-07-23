@@ -29,6 +29,7 @@ export function TryIt() {
   const [realAmt, setRealAmt] = useState("0.02");
   const [real, setReal] = useState<RealState>({ s: "idle" });
   const [realCopied, setRealCopied] = useState(false);
+  const [mp, setMp] = useState<{ note: string; link?: string; tone: "info" | "warn" } | null>(null);
 
   const gift: Gift = { occ, amt, token, to, from, msg };
   const link = useMemo(
@@ -84,6 +85,48 @@ export function TryIt() {
   }
   function openReal(l: string) {
     location.hash = l.slice(l.indexOf("#") + 1);
+  }
+
+  // On-ramp path: buy SOL with a card via MoonPay, delivered straight to a
+  // fresh gift address. Revenue here is MoonPay's affiliate fee, not the wrap
+  // fee. Settlement is async, so we hand over the claim link immediately.
+  async function buyWithCard() {
+    const sol = Math.min(Math.max(parseFloat(realAmt) || 0, 0.001), 1);
+    setMp(null);
+    const { moonpayEnabled, openMoonPayBuy } = await import("@/lib/moonpay");
+    if (!moonpayEnabled()) {
+      setMp({
+        tone: "warn",
+        note: "MoonPay not configured — set NEXT_PUBLIC_MOONPAY_API_KEY and MOONPAY_SECRET_KEY to enable card top-ups.",
+      });
+      return;
+    }
+    try {
+      const { prepareGift, encodeKey } = await import("@/lib/solana");
+      const { key, address } = prepareGift();
+      const realGift: Gift = { ...gift, token: "SOL", amt: String(sol) };
+      const link = buildGiftLink(realGift, encodeKey(key));
+      await openMoonPayBuy({
+        walletAddress: address,
+        currencyCode: "sol",
+        amount: sol,
+        redirectURL: typeof window !== "undefined" ? location.origin : undefined,
+      });
+      setMp({
+        tone: "info",
+        link,
+        note: "MoonPay opened. Once the card payment settles, the SOL lands at the gift address and they can claim.",
+      });
+    } catch (e) {
+      setMp({ tone: "warn", note: e instanceof Error ? e.message : "Could not open MoonPay." });
+    }
+  }
+  async function copyMp(l: string) {
+    try {
+      await navigator.clipboard.writeText(l);
+      setRealCopied(true);
+      setTimeout(() => setRealCopied(false), 1500);
+    } catch {}
   }
 
   const inputCls =
@@ -215,6 +258,38 @@ export function TryIt() {
               <span>gift {fmtSol(realSol)} + platform fee {fmtSol(feePreview)}</span>
               <span className="font-bold text-text">you pay {fmtSol(realSol + feePreview)} SOL</span>
             </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line/60 pt-3">
+              <span className="font-mono text-[11px] text-muted">no crypto to send?</span>
+              <button
+                onClick={buyWithCard}
+                className="rounded-lg border-2 border-ink bg-cyan px-3 py-1.5 text-xs font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5"
+              >
+                💳 buy with card
+              </button>
+              <span className="font-mono text-[10px] uppercase tracking-wide text-muted">via moonpay</span>
+            </div>
+
+            {mp && (
+              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="mt-3">
+                <p className={`font-mono text-[11px] ${mp.tone === "warn" ? "font-bold text-pink" : "text-muted"}`}>
+                  {mp.note}
+                </p>
+                {mp.link && (
+                  <div className="mt-2">
+                    <div className="rounded-xl border border-dashed border-line bg-surface-2 px-3.5 py-3 font-mono text-[11px] break-all text-muted">
+                      {mp.link}
+                    </div>
+                    <button
+                      onClick={() => copyMp(mp.link!)}
+                      className={`mt-2 rounded-xl border-2 border-ink px-4 py-2 text-sm font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan"}`}
+                    >
+                      {realCopied ? "copied ✓" : "copy gift link"}
+                    </button>
+                  </div>
+                )}
+              </motion.div>
+            )}
 
             {real.s === "error" && (
               <p className="mt-3 font-mono text-xs font-bold text-pink">{real.msg}</p>

@@ -46,11 +46,31 @@ after.
 
 ---
 
-## 2. On-ramp revenue share (MoonPay) — planned, biggest line
+## 2. On-ramp revenue share (MoonPay) — 🟡 SCAFFOLDED, biggest line
 
 Gifting is a **funding event**: most senders don't already hold the token, so
 they buy it to gift. That fresh-fiat inflow is exactly what fiat on-ramps pay a
 referral cut for — so the "fund your gift" step is our highest-value real estate.
+
+**Built in this repo** (needs only your partner keys to go live):
+
+- `lib/moonpay-sign.ts` + `app/api/moonpay/sign/route.ts` — the server-side URL
+  signer. HMAC-SHA256 of the widget query string with the secret key; the secret
+  **never reaches the browser**. Only signs `*.moonpay.com` URLs.
+- `lib/moonpay.ts` — builds the buy-widget URL, has the server sign it, opens it.
+- Composer — a **"💳 buy with card"** action that mints a fresh gift address,
+  opens the signed MoonPay widget to buy SOL straight to it, and hands over the
+  claim link. Gracefully shows a config hint when keys are absent.
+
+| Env var | Where | Meaning |
+| --- | --- | --- |
+| `NEXT_PUBLIC_MOONPAY_API_KEY` | browser | publishable key `pk_live_…` / `pk_test_…` (gates the UI) |
+| `MOONPAY_SECRET_KEY` | server only | secret key `sk_…` used to sign URLs — never exposed |
+| `NEXT_PUBLIC_MOONPAY_ENV` | browser | `sandbox` (default) or `production` |
+
+**Still to build for production:** a webhook that watches for the purchase
+settling and confirms the gift is funded (MoonPay card settlement is async), and
+picking the fee split on this path (see below).
 
 ### How MoonPay's economics work (as researched, July 2026)
 
@@ -89,11 +109,13 @@ Two options; we want the **hosted widget** (fastest, MoonPay owns KYC/payments/U
 
 ### Where it slots into the product
 
-Today the composer funds gifts from the devnet faucet (a stand-in for the
-sender's wallet). The mainnet flow becomes: **compose → MoonPay buy for
-`amount + platform fee` → funds land at the gift address → link minted.** The
-sender never needs to pre-own crypto, and we earn on both the on-ramp (MoonPay
-affiliate fee) *and* the wrap (lever #1).
+Today the composer has two funding paths: the devnet faucet ("send for real",
+which skims the on-chain wrap fee — lever #1) and **MoonPay** ("buy with card",
+which delivers straight to the gift address). On the MoonPay path our revenue is
+the **affiliate fee** MoonPay pays us, so we don't also skim the on-chain wrap
+fee there — pick one per path so the sender is charged once. The sender never
+needs to pre-own crypto: **compose → MoonPay buy → funds land at the gift
+address → they claim.**
 
 Docs: <https://dev.moonpay.com/> · widget params
 <https://dev.moonpay.com/widget/on-ramp/customization/parameters.md> · URL

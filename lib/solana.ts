@@ -93,6 +93,16 @@ async function confirm(sig: string): Promise<void> {
 }
 
 /**
+ * Generate an unfunded gift link keypair — for gifts funded externally, e.g. a
+ * MoonPay card purchase delivered straight to the returned address. The claim
+ * link is minted now; funds arrive when the purchase settles.
+ */
+export function prepareGift(): { key: Keypair; address: string } {
+  const key = Keypair.generate();
+  return { key, address: key.publicKey.toBase58() };
+}
+
+/**
  * Create a real on-chain SOL gift, charging the platform fee.
  *
  * A funder keypair stands in for the sender's connected wallet. In one atomic
