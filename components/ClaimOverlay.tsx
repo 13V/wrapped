@@ -142,14 +142,14 @@ export function ClaimOverlay() {
           <div className="w-full max-w-sm text-center">
             <motion.p
               initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-              className="font-display text-3xl font-black lowercase tracking-tight text-text"
+              className="font-display text-3xl font-semibold tracking-tight text-text"
             >
-              <span className="text-pink [text-shadow:2px_0_var(--color-cyan),-2px_0_var(--color-lime)]">{gift.from || "someone"}</span> sent you a gift 🎁
+              <span className="italic text-pink">{gift.from || "Someone"}</span> sent you a gift 🎁
             </motion.p>
 
             {keyStr && (
-              <span className="mt-3 inline-block rounded-md border border-violet/40 bg-violet/10 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wide text-violet">
-                ⚡ real · {cluster}
+              <span className="mt-3 inline-block rounded-full border border-violet/40 bg-violet/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide text-violet">
+                Real · {cluster}
               </span>
             )}
 
@@ -170,56 +170,56 @@ export function ClaimOverlay() {
                   <button
                     onClick={claim}
                     disabled={busy}
-                    className="rounded-2xl border-2 border-ink bg-lime px-8 py-4 font-display text-xl font-black lowercase text-ink shadow-[6px_6px_0_0_var(--color-pink)] transition-transform hover:-translate-y-1 disabled:opacity-70"
+                    className="rounded-full bg-ink px-8 py-4 text-lg font-semibold text-surface shadow-[var(--shadow-hard-sm)] transition-shadow hover:shadow-[var(--shadow-hard)] disabled:opacity-70"
                   >
-                    {busy ? "claiming on-chain…" : "claim it →"}
+                    {busy ? "Opening…" : "Open your gift →"}
                   </button>
                   {error && <p className="mt-3 font-mono text-xs font-bold text-pink">{error}</p>}
                 </>
               ) : (
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="space-y-3">
-                  <div className="inline-block rotate-[-2deg] rounded-xl border-2 border-ink bg-lime px-5 py-2.5 font-display text-xl font-black lowercase text-ink shadow-[4px_4px_0_0_var(--color-cyan)]">
-                    claimed — it&apos;s yours! 🎉
+                  <div className="inline-block rounded-full bg-lime px-5 py-2.5 font-display text-xl font-semibold text-ink shadow-[var(--shadow-hard-sm)]">
+                    It&apos;s yours! 🎉
                   </div>
                   {claimed.kind === "real" ? (
                     <div className="space-y-1.5">
-                      <p className="font-mono text-xs text-muted">
-                        {claimed.amount} SOL swept to a fresh wallet made for you · gas covered.
+                      <p className="text-sm text-muted">
+                        {claimed.amount} SOL is now in a new wallet we made for you — fees covered.
                       </p>
                       <p className="font-mono text-[11px] text-muted">
-                        wallet {claimed.recipient.slice(0, 4)}…{claimed.recipient.slice(-4)}
+                        Wallet {claimed.recipient.slice(0, 4)}…{claimed.recipient.slice(-4)}
                       </p>
                       <a href={`https://explorer.solana.com/tx/${claimed.sig}?cluster=${cluster}`}
                         target="_blank" rel="noreferrer"
                         className="inline-block font-mono text-[11px] font-bold text-violet underline hover:text-ink">
-                        view the claim on explorer ↗
+                        View on explorer ↗
                       </a>
 
-                      {/* what now? — swap / cash out / keep */}
-                      <div className="!mt-4 rounded-2xl border-2 border-ink bg-surface/70 p-3">
+                      {/* what next? — swap / cash out / keep */}
+                      <div className="!mt-4 rounded-2xl border border-line bg-surface/80 p-3 shadow-[var(--shadow-hard-sm)]">
                         <p className="mb-2 font-mono text-[10px] font-bold uppercase tracking-wide text-muted">
-                          what now?{quote != null && <span className="text-violet"> · ≈ {quote.toFixed(2)} usdc</span>}
+                          What next?{quote != null && <span className="text-violet"> · ≈ {quote.toFixed(2)} USDC</span>}
                         </p>
                         <div className="flex flex-wrap justify-center gap-2">
                           <button
                             onClick={swapToUsdc}
                             disabled={hubBusy === "swap"}
-                            className="rounded-xl border-2 border-ink bg-violet px-3.5 py-2 text-xs font-extrabold lowercase text-white shadow-[3px_3px_0_0_var(--color-lime)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                            className="rounded-full bg-violet px-4 py-2 text-xs font-semibold text-white shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
                           >
-                            {hubBusy === "swap" ? "swapping…" : "swap to usdc"}
+                            {hubBusy === "swap" ? "Swapping…" : "Swap to USDC"}
                           </button>
                           <button
                             onClick={cashOut}
                             disabled={hubBusy === "cash"}
-                            className="rounded-xl border-2 border-ink bg-cyan px-3.5 py-2 text-xs font-extrabold lowercase text-ink shadow-[3px_3px_0_0_var(--color-pink)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                            className="rounded-full bg-cyan px-4 py-2 text-xs font-semibold text-white shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
                           >
-                            {hubBusy === "cash" ? "opening…" : "cash out 💳"}
+                            {hubBusy === "cash" ? "Opening…" : "Cash out 💳"}
                           </button>
                           <button
                             onClick={close}
-                            className="rounded-xl border-2 border-ink bg-surface px-3.5 py-2 text-xs font-extrabold lowercase text-text transition-transform hover:-translate-y-0.5"
+                            className="rounded-full border border-line bg-surface px-4 py-2 text-xs font-semibold text-text transition-transform hover:-translate-y-0.5"
                           >
-                            keep it
+                            Keep it
                           </button>
                         </div>
                         {hub && (
@@ -239,16 +239,16 @@ export function ClaimOverlay() {
                       </div>
                     </div>
                   ) : (
-                    <p className="font-mono text-xs text-muted">
-                      wallet {claimed.wallet}… made for you · we covered the gas · you&apos;re set.
+                    <p className="text-sm text-muted">
+                      A new wallet ({claimed.wallet}…) was created for you — fees covered. You&apos;re all set.
                     </p>
                   )}
                 </motion.div>
               )}
             </div>
 
-            <button onClick={close} className="mt-8 font-mono text-sm font-bold lowercase text-muted underline hover:text-text">
-              ← back to wrapped
+            <button onClick={close} className="mt-8 text-sm font-medium text-muted underline hover:text-text">
+              ← Back to Wrapped
             </button>
           </div>
         </motion.div>

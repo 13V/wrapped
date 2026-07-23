@@ -1,11 +1,11 @@
 # Wrapped 🎁
 
-**Gift crypto that actually slaps.** Wrap any token into a 1-of-1 holographic
-card, drop the link in the group chat, and they claim it in two taps — no
-wallet, no seed phrase, no gas.
+**Give crypto as a gift.** Wrap any token into a beautiful, one-of-a-kind
+holographic card and send it with a link. They open it in seconds — no wallet,
+no app, no seed phrase, no gas.
 
-This is the web app: a bold, Gen-Z, holographic-collectible take on crypto
-gifting, built as an interactive demo.
+This is the web app: a warm, premium take on crypto gifting — approachable
+enough to send your family, built as an interactive demo.
 
 ## Highlights
 

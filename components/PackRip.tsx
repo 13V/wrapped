@@ -59,17 +59,17 @@ export function PackRip({ gift }: { gift: Gift }) {
               </div>
               {/* label */}
               <div className="relative z-10 flex h-full flex-col items-center justify-center gap-3 text-center text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.5)]">
-                <span className="font-display text-3xl font-black tracking-tight">WRAPPED</span>
-                <span className="rounded-full border-2 border-white/70 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest">
-                  1 of 1 · holo pack
+                <span className="font-display text-3xl font-semibold tracking-wide">Wrapped</span>
+                <span className="rounded-full border border-white/60 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-widest">
+                  A gift for you
                 </span>
                 <motion.span
-                  animate={reduce ? undefined : { scale: [1, 1.08, 1] }}
-                  transition={{ duration: 1.4, repeat: Infinity }}
-                  className="mt-2 rounded-xl border-[3px] border-ink bg-lime px-4 py-2 font-display text-sm font-black lowercase text-ink"
-                  style={{ color: "#08060f" }}
+                  animate={reduce ? undefined : { scale: [1, 1.06, 1] }}
+                  transition={{ duration: 1.6, repeat: Infinity }}
+                  className="mt-2 rounded-full bg-lime px-5 py-2 font-display text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)]"
+                  style={{ color: "#221c17" }}
                 >
-                  tap to rip it open ✦
+                  Tap to open ✦
                 </motion.span>
               </div>
             </div>

@@ -6,9 +6,9 @@ import { HoloCard } from "./HoloCard";
 import { fireConfetti } from "@/lib/confetti";
 
 const STEPS = [
-  { t: "wrap it", d: "pick a vibe, any token, a message. it becomes a 1-of-1 holo card." },
-  { t: "send it", d: "drop the link in the group chat. you never need their wallet." },
-  { t: "they claim it", d: "two taps and it's theirs. we spin up a wallet + cover the gas." },
+  { t: "Wrap it", d: "Choose the occasion, any token, and a message. It becomes a one-of-a-kind card." },
+  { t: "Send it", d: "Share the link however you like — a text, an email, or in person. You never need their wallet." },
+  { t: "They open it", d: "In two taps it's theirs. We create the wallet and cover the network fees for them." },
 ];
 
 export function HowItWorks() {
@@ -50,7 +50,7 @@ export function HowItWorks() {
         <div className="mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-2">
           {/* left rail */}
           <div className="order-2 md:order-1">
-            <p className="mb-6 font-mono text-sm font-bold uppercase text-pink">how it works · scroll ↓</p>
+            <p className="mb-6 font-mono text-xs font-bold uppercase tracking-wide text-gold">How it works · scroll ↓</p>
             <div className="relative flex flex-col gap-8 pl-9">
               <div className="absolute left-[13px] bottom-3 top-3 w-1 rounded bg-line" />
               <motion.div
@@ -65,13 +65,13 @@ export function HowItWorks() {
                 >
                   <motion.div
                     animate={stage === i ? { scale: 1.15 } : { scale: 1 }}
-                    className={`absolute -left-9 grid size-7 place-items-center rounded-full border-[3px] border-ink font-mono text-xs font-black ${stage === i ? "bg-lime" : "bg-surface"}`}
+                    className={`absolute -left-9 grid size-7 place-items-center rounded-full border border-ink/15 font-mono text-xs font-bold ${stage === i ? "bg-lime text-ink" : "bg-surface text-muted"}`}
                   >
                     {i + 1}
                   </motion.div>
                   <div>
-                    <h3 className="font-display text-3xl font-black lowercase text-text md:text-4xl">{s.t}</h3>
-                    <p className="mt-1 max-w-xs font-medium text-muted">{s.d}</p>
+                    <h3 className="font-display text-3xl font-semibold text-text md:text-4xl">{s.t}</h3>
+                    <p className="mt-1.5 max-w-xs leading-relaxed text-muted">{s.d}</p>
                   </div>
                 </div>
               ))}
@@ -108,9 +108,9 @@ export function HowItWorks() {
                   <span className="rotate-90">✂</span>
                 </div>
                 <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2 text-white [text-shadow:0_2px_10px_rgba(0,0,0,.5)]">
-                  <span className="font-display text-3xl font-black">WRAPPED</span>
-                  <span className="rounded-full border-2 border-white/60 px-3 py-1 font-mono text-[10px] font-bold uppercase">
-                    1 of 1 · holo pack
+                  <span className="font-display text-3xl font-semibold tracking-wide">Wrapped</span>
+                  <span className="rounded-full border border-white/50 px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wide">
+                    A gift for you
                   </span>
                 </div>
               </div>
@@ -130,9 +130,9 @@ export function HowItWorks() {
             {/* claimed stamp (claim) */}
             <motion.div
               style={{ scale: stampScale, opacity: stampOpacity }}
-              className="absolute -right-3 top-3 rotate-12 rounded-xl border-[3px] border-ink bg-lime px-4 py-2 font-display text-lg font-black lowercase shadow-hard-sm"
+              className="absolute -right-3 top-3 rotate-6 rounded-xl bg-lime px-4 py-2 font-display text-lg font-semibold text-ink shadow-hard-sm"
             >
-              claimed ✓
+              Claimed ✓
             </motion.div>
           </div>
         </div>

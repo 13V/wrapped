@@ -186,9 +186,9 @@ export function TryIt() {
       <div className="mx-auto grid max-w-6xl items-start gap-12 md:grid-cols-[1fr_320px]">
         <div>
           <Reveal>
-            <p className="mb-2 font-mono text-sm font-bold uppercase text-pink">try it live</p>
-            <h2 className="mb-8 font-display text-4xl font-black lowercase tracking-tight text-text md:text-6xl">
-              wrap one <span className="text-violet">right now.</span>
+            <p className="mb-2 font-mono text-xs font-bold uppercase tracking-wide text-gold">Try it</p>
+            <h2 className="mb-8 font-display text-4xl font-semibold tracking-tight text-text md:text-6xl">
+              Create a <span className="italic text-violet">gift</span>.
             </h2>
           </Reveal>
 
@@ -243,8 +243,8 @@ export function TryIt() {
 
           {/* gift any Solana token by contract address */}
           <div className="mt-4">
-            <label className="mb-2 block font-mono text-xs font-bold uppercase text-muted">
-              or gift any token — paste a contract address
+            <label className="mb-2 block font-mono text-[10px] font-bold uppercase tracking-wide text-muted">
+              Or gift any token — paste its contract address
             </label>
             {custom ? (
               <div className="flex items-center gap-2.5 rounded-xl border border-line bg-surface px-3 py-2">
@@ -266,18 +266,18 @@ export function TryIt() {
                 <input
                   className={inputCls + " font-mono text-sm"}
                   value={ca}
-                  placeholder="token mint address…"
+                  placeholder="Token mint address…"
                   onChange={(e) => { setCa(e.target.value); setCaState("idle"); }}
                   onKeyDown={(e) => { if (e.key === "Enter") resolveCA(); }}
                 />
                 <button onClick={resolveCA} disabled={caState === "loading"}
-                  className="shrink-0 rounded-xl border-2 border-ink bg-cyan px-4 py-2 text-sm font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5 disabled:opacity-70">
-                  {caState === "loading" ? "…" : "add"}
+                  className="shrink-0 rounded-full bg-cyan px-5 py-2 text-sm font-semibold text-white shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 disabled:opacity-70">
+                  {caState === "loading" ? "…" : "Add"}
                 </button>
               </div>
             )}
             {caState === "error" && (
-              <p className="mt-1.5 font-mono text-[11px] font-bold text-pink">couldn’t find that token — check the address.</p>
+              <p className="mt-1.5 text-[12px] font-medium text-pink">We couldn&apos;t find that token. Please check the address.</p>
             )}
           </div>
 
@@ -285,9 +285,9 @@ export function TryIt() {
             onClick={send}
             whileHover={{ y: -4 }}
             whileTap={{ scale: 0.98, y: 0 }}
-            className="mt-7 w-full rounded-2xl border-2 border-ink bg-pink py-4 font-display text-xl font-black lowercase text-white shadow-[6px_6px_0_0_var(--color-cyan)]"
+            className="mt-7 w-full rounded-full bg-ink py-4 text-lg font-semibold text-surface shadow-[var(--shadow-hard-sm)] transition-shadow hover:shadow-[var(--shadow-hard)]"
           >
-            wrap &amp; send 🎁
+            Wrap &amp; send 🎁
           </motion.button>
 
           {sent && (
@@ -297,12 +297,12 @@ export function TryIt() {
               </div>
               <div className="mt-3 flex gap-3">
                 <button onClick={copy}
-                  className={`rounded-xl border-2 border-ink px-4 py-2 text-sm font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5 ${copied ? "bg-lime" : "bg-cyan"}`}>
-                  {copied ? "copied ✓" : "copy link"}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${copied ? "bg-lime" : "bg-cyan text-white"}`}>
+                  {copied ? "Copied ✓" : "Copy link"}
                 </button>
                 <button onClick={preview}
-                  className="rounded-xl border border-line bg-surface px-4 py-2 text-sm font-extrabold lowercase text-text transition-transform hover:-translate-y-0.5">
-                  preview what they get →
+                  className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-text transition-transform hover:-translate-y-0.5">
+                  Preview what they&apos;ll get →
                 </button>
               </div>
             </motion.div>
@@ -312,12 +312,12 @@ export function TryIt() {
           <div className="mt-8 rounded-2xl border-2 border-dashed border-violet/50 bg-surface/60 p-5">
             <div className="mb-1 flex items-center gap-2">
               <span className="rounded-md border border-violet/40 bg-violet/10 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wide text-violet">
-                ⚡ live · {process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet"}
+                Live · {process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet"}
               </span>
-              <span className="font-display text-sm font-black lowercase text-text">actually move real crypto</span>
+              <span className="font-display text-base font-semibold text-text">Send real crypto</span>
             </div>
-            <p className="mb-4 font-mono text-xs text-muted">
-              mints a real link-wallet, funds it with devnet SOL, hides the key in the link. claim it below — real transactions, real explorer.
+            <p className="mb-4 text-sm leading-relaxed text-muted">
+              Creates a real gift link funded with devnet SOL and hides the key inside it. Open it below — real transactions, viewable on the explorer.
             </p>
 
             <div className="flex flex-wrap items-stretch gap-3">
@@ -337,7 +337,7 @@ export function TryIt() {
                 whileTap={real.s === "minting" ? undefined : { scale: 0.98 }}
                 className="flex-1 rounded-xl border-2 border-ink bg-violet px-5 py-2.5 font-display text-base font-black lowercase text-white shadow-[4px_4px_0_0_var(--color-lime)] disabled:opacity-70"
               >
-                {real.s === "minting" ? "minting on devnet…" : "send for real →"}
+                {real.s === "minting" ? "Sending…" : "Send it for real →"}
               </motion.button>
             </div>
 
@@ -347,14 +347,14 @@ export function TryIt() {
             </div>
 
             <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line/60 pt-3">
-              <span className="font-mono text-[11px] text-muted">no crypto to send?</span>
+              <span className="text-sm text-muted">Don&apos;t have crypto?</span>
               <button
                 onClick={buyWithCard}
-                className="rounded-lg border-2 border-ink bg-cyan px-3 py-1.5 text-xs font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5"
+                className="rounded-full bg-cyan px-4 py-1.5 text-xs font-semibold text-white shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5"
               >
-                💳 buy with card
+                💳 Buy with card
               </button>
-              <span className="font-mono text-[10px] uppercase tracking-wide text-muted">via moonpay</span>
+              <span className="font-mono text-[10px] uppercase tracking-wide text-muted">via MoonPay</span>
             </div>
 
             {mp && (
@@ -369,9 +369,9 @@ export function TryIt() {
                     </div>
                     <button
                       onClick={() => copyMp(mp.link!)}
-                      className={`mt-2 rounded-xl border-2 border-ink px-4 py-2 text-sm font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan"}`}
+                      className={`mt-2 rounded-full px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan text-white"}`}
                     >
-                      {realCopied ? "copied ✓" : "copy gift link"}
+                      {realCopied ? "Copied ✓" : "Copy gift link"}
                     </button>
                   </div>
                 )}
@@ -392,17 +392,17 @@ export function TryIt() {
                 </div>
                 <div className="mt-3 flex flex-wrap gap-3">
                   <button onClick={() => copyReal(real.link)}
-                    className={`rounded-xl border-2 border-ink px-4 py-2 text-sm font-extrabold lowercase text-ink transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan"}`}>
-                    {realCopied ? "copied ✓" : "copy link"}
+                    className={`rounded-full px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan text-white"}`}>
+                    {realCopied ? "Copied ✓" : "Copy link"}
                   </button>
                   <button onClick={() => openReal(real.link)}
-                    className="rounded-xl border-2 border-ink bg-lime px-4 py-2 text-sm font-extrabold lowercase text-ink shadow-[3px_3px_0_0_var(--color-pink)] transition-transform hover:-translate-y-0.5">
-                    open &amp; claim it →
+                    className="rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5">
+                    Open &amp; claim it →
                   </button>
                   <a href={`https://explorer.solana.com/tx/${real.sig}?cluster=${process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet"}`}
                     target="_blank" rel="noreferrer"
-                    className="rounded-xl border border-line bg-surface px-4 py-2 text-sm font-extrabold lowercase text-text transition-transform hover:-translate-y-0.5">
-                    funded ✓ view tx ↗
+                    className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-text transition-transform hover:-translate-y-0.5">
+                    Funded ✓ View transaction ↗
                   </a>
                 </div>
 
@@ -410,14 +410,14 @@ export function TryIt() {
                 <div className="mt-4 flex flex-wrap items-start gap-4 border-t border-line/60 pt-4">
                   <div className="shrink-0"><Qr value={real.link} /></div>
                   <div className="min-w-[200px] flex-1">
-                    <label className="mb-1.5 block font-mono text-[10px] font-bold uppercase text-muted">
-                      or send it directly
+                    <label className="mb-1.5 block font-mono text-[10px] font-bold uppercase tracking-wide text-muted">
+                      Or send it directly
                     </label>
                     <div className="flex gap-2">
                       <input
                         value={deliverTo}
                         onChange={(e) => { setDeliverTo(e.target.value); setDel({}); }}
-                        placeholder="email or phone"
+                        placeholder="Email or phone"
                         className={inputCls + " py-2 text-sm"}
                       />
                       <button
@@ -433,8 +433,8 @@ export function TryIt() {
                         {del.note}
                       </p>
                     )}
-                    <p className="mt-2 font-mono text-[10px] leading-relaxed text-muted">
-                      scan in person, or text/email the link. bearer link — best for small gifts; escrow hardens larger ones.
+                    <p className="mt-2 text-[11px] leading-relaxed text-muted">
+                      Scan it in person, or send the link by text or email. Best for smaller gifts.
                     </p>
                   </div>
                 </div>

@@ -13,25 +13,25 @@ export function Nav() {
       <div className="mx-auto flex max-w-6xl items-center gap-4 rounded-2xl border border-line bg-surface/70 px-4 py-2.5 backdrop-blur-md">
         <a href="#top" className="flex items-center gap-2.5">
           <motion.span
-            whileHover={{ rotate: [0, -12, 12, -8, 0], scale: 1.08 }}
+            whileHover={{ rotate: [0, -10, 10, -6, 0] }}
             transition={{ duration: 0.5 }}
-            className="grid size-9 place-items-center rounded-xl border-2 border-ink bg-lime text-lg shadow-[2px_2px_0_0_var(--color-pink)]"
+            className="grid size-9 place-items-center rounded-xl bg-lime text-lg shadow-[var(--shadow-hard-sm)]"
           >
             🎁
           </motion.span>
-          <span className="font-display text-xl font-extrabold tracking-tight text-text">wrapped</span>
+          <span className="font-display text-xl font-semibold tracking-tight text-text">Wrapped</span>
         </a>
         <nav className="ml-auto hidden items-center gap-1 md:flex">
           {[
-            ["how", "how it works"],
-            ["try", "try it"],
-            ["occasions", "occasions"],
-            ["safe", "is it safe?"],
+            ["how", "How it works"],
+            ["try", "Create a gift"],
+            ["occasions", "Occasions"],
+            ["safe", "Security"],
           ].map(([id, label]) => (
             <a
               key={id}
               href={`#${id}`}
-              className="rounded-lg px-3 py-1.5 text-sm font-bold lowercase text-muted transition-colors hover:bg-surface-2 hover:text-text"
+              className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:bg-surface-2 hover:text-text"
             >
               {label}
             </a>
@@ -39,11 +39,11 @@ export function Nav() {
         </nav>
         <motion.a
           href="#try"
-          whileHover={{ y: -2 }}
-          whileTap={{ scale: 0.95 }}
-          className="ml-auto rounded-xl border-2 border-ink bg-pink px-4 py-2 text-sm font-extrabold lowercase text-white shadow-[3px_3px_0_0_var(--color-cyan)] md:ml-0"
+          whileHover={{ y: -1 }}
+          whileTap={{ scale: 0.96 }}
+          className="ml-auto rounded-full bg-ink px-5 py-2 text-sm font-semibold text-surface shadow-[var(--shadow-hard-sm)] md:ml-0"
         >
-          send a gift
+          Send a gift
         </motion.a>
       </div>
     </motion.header>

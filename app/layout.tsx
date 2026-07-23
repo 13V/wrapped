@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Unbounded, Bricolage_Grotesque, Space_Mono } from "next/font/google";
+import { Fraunces, Bricolage_Grotesque, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const display = Unbounded({
+// Warm, premium serif for headlines; a clean grotesque for body.
+const display = Fraunces({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["500", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 const body = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -18,9 +20,9 @@ const mono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Wrapped — gift crypto that actually slaps",
+  title: "Wrapped — give crypto as a gift",
   description:
-    "Wrap any token into a holographic gift card, drop the link, they claim in two taps. No wallet. No seed phrase. No gas.",
+    "Wrap any token into a beautiful card and send it with a link. They open it in seconds — no wallet, no app, no jargon. Non-custodial, secured on Solana.",
 };
 
 export default function RootLayout({

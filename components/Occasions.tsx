@@ -23,17 +23,17 @@ export function Occasions() {
     <section id="occasions" className="relative z-10 px-4 py-20">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h2 className="mb-3 font-display text-4xl font-black lowercase tracking-tight text-text md:text-6xl">
-            a card for every <span className="text-pink">main-character</span> moment.
+          <h2 className="mb-3 font-display text-4xl font-semibold tracking-tight text-text md:text-6xl">
+            A card for every <span className="italic text-pink">occasion</span>.
           </h2>
-          <p className="mb-8 max-w-lg text-lg font-medium text-muted">
-            each one&apos;s a 1-of-1 holographic drop. grab one and fling it. yes, even the rug one.
+          <p className="mb-8 max-w-lg text-lg leading-relaxed text-muted">
+            Each one is a one-of-a-kind holographic card. Pick one up and give it a toss.
           </p>
         </Reveal>
 
         <div
           ref={wall}
-          className="relative h-[500px] overflow-hidden rounded-[28px] border-[3px] border-ink bg-surface/40 shadow-hard backdrop-blur-sm md:h-[560px]"
+          className="relative h-[500px] overflow-hidden rounded-[28px] border border-line bg-surface/50 shadow-hard backdrop-blur-sm md:h-[560px]"
         >
           {OCCASION_LIST.map((o, i) => (
             <motion.div
@@ -61,8 +61,8 @@ export function Occasions() {
               </div>
             </motion.div>
           ))}
-          <span className="pointer-events-none absolute bottom-3 right-4 z-40 font-mono text-xs font-bold uppercase text-muted">
-            ← drag · fling me ✦
+          <span className="pointer-events-none absolute bottom-3 right-4 z-40 font-mono text-[11px] font-bold uppercase tracking-wide text-muted">
+            Drag to explore ✦
           </span>
         </div>
       </div>

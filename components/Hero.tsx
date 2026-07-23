@@ -6,7 +6,7 @@ import { PackRip } from "./PackRip";
 import { Marquee } from "./Marquee";
 import { Magnetic } from "./Magnetic";
 
-const words = ["gift", "crypto", "that", "actually", "slaps."];
+const words = ["Give", "crypto", "as", "a", "gift."];
 
 export function Hero() {
   const secRef = useRef<HTMLElement>(null);
@@ -31,8 +31,8 @@ export function Hero() {
       {/* cursor-follow glow */}
       <motion.div
         aria-hidden
-        style={{ x: mx, y: my, background: "radial-gradient(circle, #ff3d9a, transparent 66%)" }}
-        className="pointer-events-none absolute z-0 -ml-40 -mt-40 h-80 w-80 rounded-full opacity-30 blur-3xl"
+        style={{ x: mx, y: my, background: "radial-gradient(circle, #e0b24c, transparent 66%)" }}
+        className="pointer-events-none absolute z-0 -ml-40 -mt-40 h-80 w-80 rounded-full opacity-25 blur-3xl"
       />
 
       <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
@@ -40,20 +40,19 @@ export function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wide text-cyan"
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wide text-gold"
           >
-            <span className="text-pink">◆</span> no wallet · no seed phrase · no cap
+            <span className="text-pink">◆</span> No wallet · No fees for them · Secured on Solana
           </motion.p>
 
-          <h1 className="font-display text-[15vw] font-black leading-[0.92] tracking-tight text-text md:text-7xl">
+          <h1 className="font-display text-[14vw] font-semibold leading-[0.98] tracking-tight text-text md:text-7xl">
             {words.map((w, i) => (
               <motion.span
                 key={w}
-                initial={{ opacity: 0, y: 24, rotate: -4 }}
-                animate={{ opacity: 1, y: 0, rotate: 0 }}
-                transition={{ delay: 0.08 * i + 0.1, type: "spring", stiffness: 260, damping: 16 }}
-                whileHover={{ scale: 1.09, rotate: -3, transition: { type: "spring", stiffness: 400, damping: 12 } }}
-                className={`mr-3 inline-block cursor-default ${w === "slaps." ? "text-pink [text-shadow:3px_0_var(--color-cyan),-3px_0_var(--color-lime)]" : ""}`}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.08 * i + 0.1, type: "spring", stiffness: 240, damping: 20 }}
+                className={`mr-3 inline-block ${w === "gift." ? "italic text-pink" : ""}`}
               >
                 {w}
               </motion.span>
@@ -64,10 +63,10 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="mt-6 max-w-md text-lg font-medium text-muted"
+            className="mt-6 max-w-md text-lg leading-relaxed text-muted"
           >
-            wrap any token into a holographic card, drop the link in the group chat,
-            and they claim it in two taps. that&apos;s the whole app.
+            Wrap any token into a beautiful card and send it with a link. They open
+            it in seconds — no wallet, no app, and no jargon to figure out.
           </motion.p>
 
           <motion.div
@@ -78,15 +77,15 @@ export function Hero() {
           >
             <Magnetic
               href="#try"
-              className="inline-block rounded-2xl border-2 border-ink bg-lime px-6 py-3.5 font-display text-lg font-extrabold lowercase text-ink shadow-[5px_5px_0_0_var(--color-pink)]"
+              className="inline-block rounded-full bg-ink px-7 py-3.5 text-base font-semibold text-surface shadow-[var(--shadow-hard-sm)] transition-shadow hover:shadow-[var(--shadow-hard)]"
             >
-              wrap one now →
+              Create a gift →
             </Magnetic>
             <Magnetic
               href="#how"
-              className="inline-block rounded-2xl border border-line bg-surface px-6 py-3.5 font-display text-lg font-extrabold lowercase text-text"
+              className="inline-block rounded-full border border-line bg-surface px-7 py-3.5 text-base font-semibold text-text hover:border-ink/30"
             >
-              how&apos;s it work
+              See how it works
             </Magnetic>
           </motion.div>
         </div>
@@ -101,8 +100,8 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <div className="mt-10 -rotate-1 border-y-2 border-ink bg-lime py-2.5">
-        <Marquee items={["send crypto", "no seed phrase", "claim in 2 taps", "gas on us", "to the group chat"]} />
+      <div className="mt-10 border-y border-ink/10 bg-lime/90 py-2.5">
+        <Marquee items={["Send crypto", "No seed phrase", "Claim in seconds", "Fees on us", "Any occasion"]} />
       </div>
     </section>
   );

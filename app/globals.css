@@ -1,29 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  /* crisp cool-white page; the holo cards keep their own dark base so foil pops */
-  --color-base: #f4f3fa;
-  --color-surface: #ffffff;
-  --color-surface-2: #ecebf5;
-  --color-text: #141018;
-  --color-ink: #141018;
-  --color-muted: #6b6678;
-  --color-line: #e3e1ee;
+  /* warm ivory page; the holo cards keep their own dark base so foil pops */
+  --color-base: #f7f3ec;
+  --color-surface: #fffdf9;
+  --color-surface-2: #f0e9dd;
+  --color-text: #241d18;
+  --color-ink: #241d18;
+  --color-muted: #736a5f;
+  --color-line: #e6ddcf;
 
-  /* neon accents */
-  --color-pink: #ff2d92;
-  --color-cyan: #12b9d8;
-  --color-violet: #7a5bff;
-  --color-lime: #bfff3a;
-  --color-gold: #ffbf1f;
+  /* warm, premium accents (calmer than neon) */
+  --color-pink: #c05e77;   /* dusty rose */
+  --color-cyan: #3f8c86;   /* muted teal */
+  --color-violet: #7b6ba6; /* soft plum */
+  --color-lime: #e0b24c;   /* warm gold (primary accent fill) */
+  --color-gold: #c2933a;
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
   --font-mono: var(--font-mono);
 
-  --shadow-hard: 5px 5px 0 0 var(--color-ink);
-  --shadow-hard-sm: 3px 3px 0 0 var(--color-ink);
-  --shadow-hard-lg: 8px 8px 0 0 var(--color-ink);
+  /* soft, premium shadows (no more hard neo-brutalist offsets) */
+  --shadow-hard: 0 10px 30px -12px rgba(36, 29, 24, 0.28);
+  --shadow-hard-sm: 0 6px 18px -8px rgba(36, 29, 24, 0.24);
+  --shadow-hard-lg: 0 24px 60px -20px rgba(36, 29, 24, 0.32);
 }
 
 * { box-sizing: border-box; }
@@ -40,7 +41,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-::selection { background: var(--color-lime); color: #141018; }
+::selection { background: color-mix(in srgb, var(--color-lime) 55%, transparent); color: var(--color-ink); }
 
 .font-display { font-family: var(--font-display), system-ui, sans-serif; }
 .font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
@@ -49,7 +50,7 @@ body {
 body::before {
   content: "";
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  opacity: 0.28; mix-blend-mode: multiply;
+  opacity: 0.14; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 }
 
