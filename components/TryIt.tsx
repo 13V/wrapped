@@ -5,14 +5,16 @@ import { motion } from "motion/react";
 import { HoloCard } from "./HoloCard";
 import { Reveal } from "./Reveal";
 import { OCCASION_LIST, type OccasionKey } from "@/lib/occasions";
-import { encodeGift, buildGiftLink, type Gift } from "@/lib/gift";
+import { encodeGift, buildGiftLink, quoteFeeSol, type Gift } from "@/lib/gift";
 import { fireConfetti } from "@/lib/confetti";
 
 type RealState =
   | { s: "idle" }
   | { s: "minting" }
-  | { s: "ready"; link: string; sig: string; address: string }
+  | { s: "ready"; link: string; sig: string; address: string; feeSol: number; treasury: string }
   | { s: "error"; msg: string };
+
+const fmtSol = (n: number) => n.toFixed(4).replace(/\.?0+$/, "");
 
 export function TryIt() {
   const [occ, setOcc] = useState<OccasionKey>("birthday");
@@ -57,11 +59,11 @@ export function TryIt() {
     const sol = Math.min(Math.max(parseFloat(realAmt) || 0, 0.001), 1);
     setReal({ s: "minting" });
     try {
-      const { createRealGift, encodeKey } = await import("@/lib/solana");
-      const { key, sig, address } = await createRealGift(sol);
+      const { createRealGift, encodeKey, toSol } = await import("@/lib/solana");
+      const { key, sig, address, feeLamports, treasury } = await createRealGift(sol);
       const realGift: Gift = { ...gift, token: "SOL", amt: String(sol) };
       const fullLink = buildGiftLink(realGift, encodeKey(key));
-      setReal({ s: "ready", link: fullLink, sig, address });
+      setReal({ s: "ready", link: fullLink, sig, address, feeSol: toSol(feeLamports), treasury });
       fireConfetti(0.78, 0.5);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Something went wrong.";
@@ -86,6 +88,9 @@ export function TryIt() {
 
   const inputCls =
     "w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 font-bold text-text outline-none placeholder:text-muted/50 focus:border-cyan transition-colors";
+
+  const realSol = Math.min(Math.max(parseFloat(realAmt) || 0, 0), 1);
+  const feePreview = quoteFeeSol(realSol);
 
   return (
     <section id="try" className="relative z-10 px-4 py-20">
@@ -206,12 +211,20 @@ export function TryIt() {
               </motion.button>
             </div>
 
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 font-mono text-[11px] text-muted">
+              <span>gift {fmtSol(realSol)} + platform fee {fmtSol(feePreview)}</span>
+              <span className="font-bold text-text">you pay {fmtSol(realSol + feePreview)} SOL</span>
+            </div>
+
             {real.s === "error" && (
               <p className="mt-3 font-mono text-xs font-bold text-pink">{real.msg}</p>
             )}
 
             {real.s === "ready" && (
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-4">
+                <p className="mb-2 font-mono text-[11px] font-bold text-violet">
+                  ✓ fee {fmtSol(real.feeSol)} SOL → treasury {real.treasury.slice(0, 4)}…{real.treasury.slice(-4)}
+                </p>
                 <div className="rounded-xl border border-dashed border-line bg-surface-2 px-3.5 py-3 font-mono text-[11px] break-all text-muted">
                   {real.link}
                 </div>

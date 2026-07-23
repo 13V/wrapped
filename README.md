@@ -84,6 +84,12 @@ implements the **bearer-link** model in [`lib/solana.ts`](lib/solana.ts):
    fee (it was funded with a little extra dust), so the recipient needs
    nothing — no app, no seed phrase, no gas.
 
+**Revenue:** every real wrap also charges a small **platform fee** (default
+1.5% + 0.001 SOL) to the sender, paid atomically to a treasury address — the
+recipient still gets the full gift. Rates and treasury are env-configurable; see
+[docs/MONETIZATION.md](docs/MONETIZATION.md) for the fee policy and the planned
+MoonPay on-ramp revenue share.
+
 It defaults to **devnet** (play money). Point it elsewhere with env vars:
 
 ```bash

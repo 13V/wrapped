@@ -22,6 +22,7 @@ import {
   Transaction,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
+import { quoteFeeSol } from "./gift";
 
 // web3.js reaches for a global Buffer in the browser; Next/Turbopack doesn't
 // provide one, so polyfill it once on the client.
@@ -34,6 +35,17 @@ export const RPC_URL =
 export const CLUSTER = process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet";
 /** flat lamport cost of a 1-signature transfer — what the claim tx pays. */
 export const FEE_LAMPORTS = 5000;
+
+/** Where the platform fee lands. Override with NEXT_PUBLIC_WRAPPED_TREASURY. */
+export const TREASURY = new PublicKey(
+  process.env.NEXT_PUBLIC_WRAPPED_TREASURY ||
+    "BptTBLiQiXBYktXHq6Jv1KW46Y5zsKP4qQ3TXFwj184A",
+);
+
+/** The platform fee for a gift, in lamports (mirrors lib/gift.ts policy). */
+export function quoteFeeLamports(giftLamports: number): number {
+  return solToLamports(quoteFeeSol(toSol(giftLamports)));
+}
 
 let _conn: Connection | null = null;
 export function conn(): Connection {
@@ -81,19 +93,58 @@ async function confirm(sig: string): Promise<void> {
 }
 
 /**
- * Create a real on-chain SOL gift. Funds a throwaway "link key" from the
- * cluster faucet with the gift amount plus enough dust to cover the eventual
- * claim fee, so the recipient truly needs nothing.
+ * Create a real on-chain SOL gift, charging the platform fee.
+ *
+ * A funder keypair stands in for the sender's connected wallet. In one atomic
+ * transaction it (a) funds the throwaway "link key" with the gift plus a little
+ * dust to cover the eventual claim fee, and (b) pays Wrapped's platform fee to
+ * the treasury. Gift and fee settle together or not at all — the recipient
+ * still receives the full gift; the fee is on top, paid by the sender.
  */
-export async function createRealGift(
-  sol: number,
-): Promise<{ key: Keypair; lamports: number; sig: string; address: string }> {
+export async function createRealGift(sol: number): Promise<{
+  key: Keypair;
+  lamports: number;
+  feeLamports: number;
+  treasury: string;
+  sig: string;
+  address: string;
+}> {
   const c = conn();
   const key = Keypair.generate();
+  const funder = Keypair.generate(); // stands in for the sender's wallet
   const lamports = solToLamports(sol);
-  const sig = await c.requestAirdrop(key.publicKey, lamports + FEE_LAMPORTS);
-  await confirm(sig);
-  return { key, lamports, sig, address: key.publicKey.toBase58() };
+  const feeLamports = quoteFeeLamports(lamports);
+
+  // The sender covers: gift + claim dust (→ link key) + platform fee
+  // (→ treasury) + their own tx fee. One airdrop stands in for the wallet.
+  await confirm(
+    await c.requestAirdrop(
+      funder.publicKey,
+      lamports + FEE_LAMPORTS + feeLamports + FEE_LAMPORTS,
+    ),
+  );
+
+  const tx = new Transaction().add(
+    SystemProgram.transfer({
+      fromPubkey: funder.publicKey,
+      toPubkey: key.publicKey,
+      lamports: lamports + FEE_LAMPORTS,
+    }),
+    SystemProgram.transfer({
+      fromPubkey: funder.publicKey,
+      toPubkey: TREASURY,
+      lamports: feeLamports,
+    }),
+  );
+  const sig = await sendAndConfirmTransaction(c, tx, [funder]);
+  return {
+    key,
+    lamports,
+    feeLamports,
+    treasury: TREASURY.toBase58(),
+    sig,
+    address: key.publicKey.toBase58(),
+  };
 }
 
 /**

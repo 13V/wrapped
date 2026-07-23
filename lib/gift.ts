@@ -32,6 +32,18 @@ export function decodeGift(s: string): Gift | null {
   }
 }
 
+// ---- platform fee policy (the revenue skim) --------------------------------
+// Pure + dependency-free so the composer can preview the fee without loading
+// web3. lib/solana.ts charges exactly this on-chain at wrap time.
+export const FEE_BPS = Number(process.env.NEXT_PUBLIC_WRAPPED_FEE_BPS ?? "150"); // 1.5%
+export const FEE_FLAT_SOL = Number(process.env.NEXT_PUBLIC_WRAPPED_FEE_FLAT_SOL ?? "0.001");
+
+/** What Wrapped charges the sender on top of the gift, in SOL. */
+export function quoteFeeSol(giftSol: number): number {
+  const g = Math.max(giftSol || 0, 0);
+  return FEE_FLAT_SOL + (g * FEE_BPS) / 10000;
+}
+
 /** Build the shareable link. A `key` fragment marks a real on-chain gift. */
 export function buildGiftLink(g: Gift, key?: string): string {
   if (typeof window === "undefined") return "";
