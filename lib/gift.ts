@@ -31,3 +31,17 @@ export function decodeGift(s: string): Gift | null {
     return null;
   }
 }
+
+/** Build the shareable link. A `key` fragment marks a real on-chain gift. */
+export function buildGiftLink(g: Gift, key?: string): string {
+  if (typeof window === "undefined") return "";
+  const base = `${location.origin}${location.pathname}#g=${encodeGift(g)}`;
+  return key ? `${base}&k=${key}` : base;
+}
+
+/** Pull the gift metadata (`g`) and optional bearer key (`k`) out of a hash. */
+export function parseGiftHash(hash: string): { gift: Gift | null; key: string | null } {
+  const g = hash.match(/[#&]g=([A-Za-z0-9_-]+)/);
+  const k = hash.match(/[#&]k=([A-Za-z0-9_-]+)/);
+  return { gift: g ? decodeGift(g[1]) : null, key: k ? k[1] : null };
+}
