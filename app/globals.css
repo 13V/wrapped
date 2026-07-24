@@ -1,58 +1,60 @@
 @import "tailwindcss";
 
 @theme {
-  /* warm ivory page; the holo cards keep their own dark base so foil pops */
-  --color-base: #f7f3ec;
-  --color-surface: #fffdf9;
-  --color-surface-2: #f0e9dd;
-  --color-text: #241d18;
-  --color-ink: #241d18;
-  --color-muted: #736a5f;
-  --color-line: #e6ddcf;
+  /* ---- Stripe surfaces: crisp white page + white cards, cool slate wash ---- */
+  --color-base:      #ffffff;   /* pure white page */
+  --color-surface:   #ffffff;   /* crisp white cards / nav / inputs */
+  --color-surface-2: #f6f9fc;   /* Stripe's signature off-white: inputs, fills, light bands */
+  --color-text:      #0a2540;   /* deep navy-slate ink */
+  --color-ink:       #0a2540;   /* same navy — dark pills / borders / marquee text */
+  --color-muted:     #425466;   /* secondary slate text */
+  --color-line:      #e6ebf1;   /* hairline border */
 
-  /* warm, premium accents (calmer than neon) */
-  --color-pink: #c05e77;   /* dusty rose */
-  --color-cyan: #3f8c86;   /* muted teal */
-  --color-violet: #7b6ba6; /* soft plum */
-  --color-lime: #e0b24c;   /* warm gold (primary accent fill) */
-  --color-gold: #c2933a;
+  /* ---- accents: NAMES kept, VALUES remapped to the Stripe idiom ---- */
+  --color-pink:   #ff7e6b;   /* soft coral — decorative ◆, warm alerts, gradient tie-in */
+  --color-cyan:   #0aa5c7;   /* teal — secondary actions (copy, add token, cash out, buy) */
+  --color-violet: #4b8df8;   /* Stripe blue — "live"/"real" badges, swap, send-for-real */
+  --color-lime:   #635bff;   /* STRIPE INDIGO — the primary brand fill (bg-lime everywhere) */
+  --color-gold:   #635bff;   /* indigo — uppercase mono eyebrow/kicker labels (text-gold) */
 
   --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-mono: var(--font-mono);
+  --font-body:    var(--font-body);
+  --font-mono:    var(--font-mono);
 
-  /* soft, premium shadows (no more hard neo-brutalist offsets) */
-  --shadow-hard: 0 10px 30px -12px rgba(36, 29, 24, 0.28);
-  --shadow-hard-sm: 0 6px 18px -8px rgba(36, 29, 24, 0.24);
-  --shadow-hard-lg: 0 24px 60px -20px rgba(36, 29, 24, 0.32);
+  /* ---- Stripe layered depth: 2-3 stacked low-alpha navy shadows, never a hard offset ---- */
+  --shadow-hard-sm: 0 1px 1px rgba(10,37,64,0.06), 0 2px 4px rgba(10,37,64,0.06);
+  --shadow-hard:    0 1px 1px rgba(10,37,64,0.03), 0 3px 6px rgba(10,37,64,0.06), 0 12px 28px -6px rgba(10,37,64,0.12);
+  --shadow-hard-lg: 0 2px 5px rgba(10,37,64,0.06), 0 15px 35px -8px rgba(10,37,64,0.14), 0 45px 90px -20px rgba(10,37,64,0.18);
+  /* indigo-tinted lift for primary buttons */
+  --shadow-indigo:    0 1px 1px rgba(10,37,64,0.06), 0 4px 10px rgba(99,91,255,0.30);
+  --shadow-indigo-lg: 0 2px 4px rgba(10,37,64,0.08), 0 12px 28px rgba(99,91,255,0.38);
+
+  /* ---- tighter Stripe radii ---- */
+  --radius-lg:  10px;
+  --radius-xl:  12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background-color: var(--color-base);
+  background-color: #ffffff;
+  /* a whisper of indigo at the very top + faint slate at the bottom so sections seat; no color washes */
   background-image:
-    radial-gradient(55% 45% at 12% 0%, color-mix(in srgb, var(--color-violet) 14%, transparent), transparent 60%),
-    radial-gradient(50% 40% at 92% 5%, color-mix(in srgb, var(--color-cyan) 16%, transparent), transparent 58%),
-    radial-gradient(55% 45% at 82% 96%, color-mix(in srgb, var(--color-pink) 12%, transparent), transparent 60%);
+    radial-gradient(60% 40% at 50% -8%, rgba(99,91,255,0.05), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #ffffff 72%, #f6f9fc 100%);
   color: var(--color-text);
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
-::selection { background: color-mix(in srgb, var(--color-lime) 55%, transparent); color: var(--color-ink); }
+::selection { background: color-mix(in srgb, var(--color-lime) 22%, transparent); color: var(--color-ink); }
 
 .font-display { font-family: var(--font-display), system-ui, sans-serif; }
 .font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
-
-/* subtle film grain */
-body::before {
-  content: "";
-  position: fixed; inset: 0; z-index: 1; pointer-events: none;
-  opacity: 0.14; mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-}
 
 /* ================= holographic foil ================= */
 /* chunky, wide rainbow bands — vivid over a dark card */
@@ -122,9 +124,45 @@ body::before {
   100% { background-position: 300% 50%; }
 }
 .animated-grad {
-  background-image: linear-gradient(115deg, #ff3d9a, #9b6bff, #22e0ff, #ff3d9a);
+  background-image: linear-gradient(115deg, #635bff, #4b8df8, #22c9e0, #23c4a6, #7fd858, #635bff);
   background-size: 300% 100%;
-  animation: grad-shift 9s linear infinite;
+  animation: grad-shift 14s linear infinite;
+}
+
+/* ================= Stripe signature hero mesh ================= */
+.hero-gradient {
+  position: absolute;
+  inset: -22% -12% auto -12%;   /* bleed past the edges before the skew */
+  height: 760px;
+  z-index: 0;
+  pointer-events: none;
+  transform: skewY(-12deg);
+  transform-origin: top left;
+  filter: blur(46px) saturate(1.05);
+  opacity: 0.9;
+  background:
+    radial-gradient(38% 55% at  8% 20%, #635bff 0%, transparent 60%),
+    radial-gradient(36% 52% at 28% 10%, #4b8df8 0%, transparent 62%),
+    radial-gradient(40% 55% at 50% 24%, #22c9e0 0%, transparent 60%),
+    radial-gradient(38% 52% at 70% 12%, #23c4a6 0%, transparent 60%),
+    radial-gradient(36% 50% at 86% 26%, #7fd858 0%, transparent 60%),
+    radial-gradient(46% 60% at 102% 10%, #ffb27a 0%, transparent 62%),
+    linear-gradient(100deg, #eef2ff 0%, #f4f8ff 45%, #ffffff 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 50%, transparent 100%);
+}
+.hero-gradient::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, #635bff, #4b8df8, #22c9e0, #23c4a6, #7fd858, #ffb27a, #635bff);
+  background-size: 280% 100%;
+  opacity: 0.32;
+  mix-blend-mode: screen;
+  animation: hero-flow 20s linear infinite;
+}
+@keyframes hero-flow {
+  from { background-position:   0% 50%; }
+  to   { background-position: 280% 50%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -133,5 +171,5 @@ body::before {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .holo-bands, .glare-sweep { animation: none; }
+  .holo-bands, .glare-sweep, .hero-gradient::after { animation: none; }
 }

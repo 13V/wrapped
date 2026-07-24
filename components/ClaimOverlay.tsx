@@ -137,14 +137,14 @@ export function ClaimOverlay() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] grid place-items-center overflow-y-auto bg-base/95 px-5 py-10 backdrop-blur-md"
+          className="fixed inset-0 z-[100] grid place-items-center overflow-y-auto bg-white/85 px-5 py-10 backdrop-blur-md"
         >
           <div className="w-full max-w-sm text-center">
             <motion.p
               initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
               className="font-display text-3xl font-semibold tracking-tight text-text"
             >
-              <span className="italic text-pink">{gift.from || "Someone"}</span> sent you a gift 🎁
+              <span className="text-lime">{gift.from || "Someone"}</span> sent you a gift 🎁
             </motion.p>
 
             {keyStr && (
@@ -162,7 +162,7 @@ export function ClaimOverlay() {
               <HoloCard gift={gift} interactive float reveal opened={!!claimed} />
             </motion.div>
 
-            {gift.msg && <p className="mt-5 font-medium italic text-muted">&ldquo;{gift.msg}&rdquo;</p>}
+            {gift.msg && <p className="mt-5 font-medium text-muted">&ldquo;{gift.msg}&rdquo;</p>}
 
             <div className="mt-7">
               {!claimed ? (
@@ -170,7 +170,7 @@ export function ClaimOverlay() {
                   <button
                     onClick={claim}
                     disabled={busy}
-                    className="rounded-full bg-ink px-8 py-4 text-lg font-semibold text-surface shadow-[var(--shadow-hard-sm)] transition-shadow hover:shadow-[var(--shadow-hard)] disabled:opacity-70"
+                    className="rounded-full bg-lime px-8 py-4 text-lg font-semibold text-white shadow-[var(--shadow-indigo)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-indigo-lg)] disabled:opacity-70"
                   >
                     {busy ? "Opening…" : "Open your gift →"}
                   </button>
@@ -178,7 +178,7 @@ export function ClaimOverlay() {
                 </>
               ) : (
                 <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="space-y-3">
-                  <div className="inline-block rounded-full bg-lime px-5 py-2.5 font-display text-xl font-semibold text-ink shadow-[var(--shadow-hard-sm)]">
+                  <div className="inline-block rounded-full bg-lime px-5 py-2.5 font-display text-xl font-semibold text-white shadow-[var(--shadow-indigo)]">
                     It&apos;s yours! 🎉
                   </div>
                   {claimed.kind === "real" ? (
@@ -217,7 +217,7 @@ export function ClaimOverlay() {
                           </button>
                           <button
                             onClick={close}
-                            className="rounded-full border border-line bg-surface px-4 py-2 text-xs font-semibold text-text transition-transform hover:-translate-y-0.5"
+                            className="rounded-full border border-line bg-white px-4 py-2 text-xs font-semibold text-ink transition-colors hover:border-lime/40 hover:text-lime"
                           >
                             Keep it
                           </button>

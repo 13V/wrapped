@@ -55,7 +55,7 @@ export function HowItWorks() {
               <div className="absolute left-[13px] bottom-3 top-3 w-1 rounded bg-line" />
               <motion.div
                 style={{ height: railFill }}
-                className="absolute left-[13px] top-3 w-1 rounded bg-gradient-to-b from-pink via-violet to-cyan"
+                className="absolute left-[13px] top-3 w-1 rounded bg-gradient-to-b from-lime via-violet to-cyan"
               />
               {STEPS.map((s, i) => (
                 <div
@@ -65,7 +65,7 @@ export function HowItWorks() {
                 >
                   <motion.div
                     animate={stage === i ? { scale: 1.15 } : { scale: 1 }}
-                    className={`absolute -left-9 grid size-7 place-items-center rounded-full border border-ink/15 font-mono text-xs font-bold ${stage === i ? "bg-lime text-ink" : "bg-surface text-muted"}`}
+                    className={`absolute -left-9 grid size-7 place-items-center rounded-full border border-line font-mono text-xs font-bold ${stage === i ? "bg-lime text-white" : "bg-surface text-muted"}`}
                   >
                     {i + 1}
                   </motion.div>
@@ -123,14 +123,14 @@ export function HowItWorks() {
             {/* link chip (send) */}
             <motion.div
               style={{ opacity: linkOpacity, y: linkY }}
-              className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-ink bg-surface px-4 py-2 font-mono text-xs font-bold text-text shadow-hard-sm"
+              className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-white px-4 py-2 font-mono text-xs font-bold text-ink shadow-[var(--shadow-hard)]"
             >
               🔗 wrapped.gift/n/0482 · copied ✓
             </motion.div>
             {/* claimed stamp (claim) */}
             <motion.div
               style={{ scale: stampScale, opacity: stampOpacity }}
-              className="absolute -right-3 top-3 rotate-6 rounded-xl bg-lime px-4 py-2 font-display text-lg font-semibold text-ink shadow-hard-sm"
+              className="absolute -right-3 top-3 rotate-6 rounded-lg bg-lime px-4 py-2 font-display text-lg font-semibold text-white shadow-hard-sm"
             >
               Claimed ✓
             </motion.div>

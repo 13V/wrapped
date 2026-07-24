@@ -10,12 +10,12 @@ export function Nav() {
       transition={{ type: "spring", stiffness: 160, damping: 20, delay: 0.1 }}
       className="sticky top-0 z-40 px-4 pt-4"
     >
-      <div className="mx-auto flex max-w-6xl items-center gap-4 rounded-2xl border border-line bg-surface/70 px-4 py-2.5 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center gap-4 rounded-full border border-line bg-white/80 px-4 py-2.5 shadow-[var(--shadow-hard-sm)] backdrop-blur-md">
         <a href="#top" className="flex items-center gap-2.5">
           <motion.span
             whileHover={{ rotate: [0, -10, 10, -6, 0] }}
             transition={{ duration: 0.5 }}
-            className="grid size-9 place-items-center rounded-xl bg-lime text-lg shadow-[var(--shadow-hard-sm)]"
+            className="grid size-9 place-items-center rounded-lg bg-lime text-lg shadow-[var(--shadow-hard-sm)]"
           >
             🎁
           </motion.span>

@@ -176,7 +176,7 @@ export function TryIt() {
   }
 
   const inputCls =
-    "w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 font-bold text-text outline-none placeholder:text-muted/50 focus:border-cyan transition-colors";
+    "w-full rounded-xl border border-line bg-surface-2 px-3.5 py-2.5 font-medium text-text outline-none placeholder:text-muted/50 transition-shadow focus:border-lime focus:bg-white focus:shadow-[0_0_0_3px_rgba(99,91,255,0.16)]";
 
   const realSol = Math.min(Math.max(parseFloat(realAmt) || 0, 0), 1);
   const feePreview = quoteFeeSol(realSol);
@@ -188,7 +188,7 @@ export function TryIt() {
           <Reveal>
             <p className="mb-2 font-mono text-xs font-bold uppercase tracking-wide text-gold">Try it</p>
             <h2 className="mb-8 font-display text-4xl font-semibold tracking-tight text-text md:text-6xl">
-              Create a <span className="italic text-violet">gift</span>.
+              Create a <span className="text-lime">gift</span>.
             </h2>
           </Reveal>
 
@@ -200,10 +200,10 @@ export function TryIt() {
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.93 }}
                 onClick={() => { setOcc(o.key); setSent(false); }}
-                className={`rounded-xl px-3.5 py-2 text-sm font-extrabold lowercase ${
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                   occ === o.key
-                    ? "border-2 border-ink bg-lime text-ink shadow-[3px_3px_0_0_var(--color-pink)]"
-                    : "border border-line bg-surface text-text"
+                    ? "border border-lime bg-lime text-white shadow-[var(--shadow-indigo)]"
+                    : "border border-line bg-surface text-text hover:border-lime/40"
                 }`}
               >
                 <span className="mr-1.5">{o.emoji}</span>{o.label}
@@ -285,7 +285,7 @@ export function TryIt() {
             onClick={send}
             whileHover={{ y: -4 }}
             whileTap={{ scale: 0.98, y: 0 }}
-            className="mt-7 w-full rounded-full bg-ink py-4 text-lg font-semibold text-surface shadow-[var(--shadow-hard-sm)] transition-shadow hover:shadow-[var(--shadow-hard)]"
+            className="mt-7 w-full rounded-full bg-lime py-4 text-lg font-semibold text-white shadow-[var(--shadow-indigo)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-indigo-lg)]"
           >
             Wrap &amp; send 🎁
           </motion.button>
@@ -297,11 +297,11 @@ export function TryIt() {
               </div>
               <div className="mt-3 flex gap-3">
                 <button onClick={copy}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${copied ? "bg-lime" : "bg-cyan text-white"}`}>
+                  className={`rounded-full px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${copied ? "bg-lime" : "bg-cyan"}`}>
                   {copied ? "Copied ✓" : "Copy link"}
                 </button>
                 <button onClick={preview}
-                  className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-text transition-transform hover:-translate-y-0.5">
+                  className="rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-lime/40 hover:text-lime">
                   Preview what they&apos;ll get →
                 </button>
               </div>
@@ -309,9 +309,9 @@ export function TryIt() {
           )}
 
           {/* ---------- real on-chain path (devnet) ---------- */}
-          <div className="mt-8 rounded-2xl border-2 border-dashed border-violet/50 bg-surface/60 p-5">
+          <div className="mt-8 rounded-2xl border border-line bg-surface-2 p-5">
             <div className="mb-1 flex items-center gap-2">
-              <span className="rounded-md border border-violet/40 bg-violet/10 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wide text-violet">
+              <span className="rounded-full border border-violet/40 bg-violet/10 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide text-violet">
                 Live · {process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet"}
               </span>
               <span className="font-display text-base font-semibold text-text">Send real crypto</span>
@@ -335,7 +335,7 @@ export function TryIt() {
                 disabled={real.s === "minting"}
                 whileHover={real.s === "minting" ? undefined : { y: -3 }}
                 whileTap={real.s === "minting" ? undefined : { scale: 0.98 }}
-                className="flex-1 rounded-xl border-2 border-ink bg-violet px-5 py-2.5 font-display text-base font-black lowercase text-white shadow-[4px_4px_0_0_var(--color-lime)] disabled:opacity-70"
+                className="flex-1 rounded-full bg-violet px-5 py-2.5 text-base font-semibold text-white shadow-[var(--shadow-hard)] transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-70"
               >
                 {real.s === "minting" ? "Sending…" : "Send it for real →"}
               </motion.button>
@@ -369,7 +369,7 @@ export function TryIt() {
                     </div>
                     <button
                       onClick={() => copyMp(mp.link!)}
-                      className={`mt-2 rounded-full px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan text-white"}`}
+                      className={`mt-2 rounded-full px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan"}`}
                     >
                       {realCopied ? "Copied ✓" : "Copy gift link"}
                     </button>
@@ -392,16 +392,16 @@ export function TryIt() {
                 </div>
                 <div className="mt-3 flex flex-wrap gap-3">
                   <button onClick={() => copyReal(real.link)}
-                    className={`rounded-full px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan text-white"}`}>
+                    className={`rounded-full px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5 ${realCopied ? "bg-lime" : "bg-cyan"}`}>
                     {realCopied ? "Copied ✓" : "Copy link"}
                   </button>
                   <button onClick={() => openReal(real.link)}
-                    className="rounded-full bg-lime px-4 py-2 text-sm font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-transform hover:-translate-y-0.5">
+                    className="rounded-full bg-lime px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-indigo)] transition-transform hover:-translate-y-0.5">
                     Open &amp; claim it →
                   </button>
                   <a href={`https://explorer.solana.com/tx/${real.sig}?cluster=${process.env.NEXT_PUBLIC_SOLANA_CLUSTER || "devnet"}`}
                     target="_blank" rel="noreferrer"
-                    className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-text transition-transform hover:-translate-y-0.5">
+                    className="rounded-full border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition-colors hover:border-lime/40 hover:text-lime">
                     Funded ✓ View transaction ↗
                   </a>
                 </div>
@@ -423,9 +423,9 @@ export function TryIt() {
                       <button
                         onClick={() => sendDelivery(real.link)}
                         disabled={del.busy}
-                        className="shrink-0 rounded-xl border-2 border-ink bg-pink px-4 py-2 text-sm font-extrabold lowercase text-white shadow-[3px_3px_0_0_var(--color-cyan)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                        className="shrink-0 rounded-xl bg-lime px-5 py-2 text-sm font-semibold text-white shadow-[var(--shadow-indigo)] transition-transform hover:-translate-y-0.5 disabled:opacity-70"
                       >
-                        {del.busy ? "sending…" : "send"}
+                        {del.busy ? "Sending…" : "Send"}
                       </button>
                     </div>
                     {del.note && (
@@ -444,7 +444,7 @@ export function TryIt() {
         </div>
 
         <div className="sticky top-24 mx-auto w-full max-w-[300px]">
-          <p className="mb-3 text-center font-mono text-xs font-bold uppercase text-pink">↓ live preview</p>
+          <p className="mb-3 text-center font-mono text-xs font-bold uppercase tracking-wide text-lime">↓ Live preview</p>
           <HoloCard gift={gift} interactive />
         </div>
       </div>

@@ -10,7 +10,7 @@ export function ScrollProgress() {
     <motion.div
       style={{
         scaleX,
-        background: "linear-gradient(90deg,#ff2d92,#7a5bff,#12b9d8,#bfff3a)",
+        background: "linear-gradient(90deg,#635bff,#4b8df8,#22c9e0)",
       }}
       className="fixed inset-x-0 top-0 z-[60] h-1 origin-left"
       aria-hidden="true"

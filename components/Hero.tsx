@@ -26,13 +26,15 @@ export function Hero() {
       id="top"
       ref={secRef}
       onPointerMove={onMove}
-      className="relative z-10 overflow-hidden px-4 pt-10 pb-6 md:pt-16"
+      className="relative z-10 overflow-hidden px-4 pt-12 pb-10 md:pt-20 md:pb-14"
     >
+      {/* signature Stripe gradient mesh */}
+      <div className="hero-gradient" aria-hidden />
       {/* cursor-follow glow */}
       <motion.div
         aria-hidden
-        style={{ x: mx, y: my, background: "radial-gradient(circle, #e0b24c, transparent 66%)" }}
-        className="pointer-events-none absolute z-0 -ml-40 -mt-40 h-80 w-80 rounded-full opacity-25 blur-3xl"
+        style={{ x: mx, y: my, background: "radial-gradient(circle, rgba(99,91,255,0.9), transparent 66%)" }}
+        className="pointer-events-none absolute z-0 -ml-40 -mt-40 h-80 w-80 rounded-full opacity-20 blur-3xl"
       />
 
       <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
@@ -52,7 +54,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.08 * i + 0.1, type: "spring", stiffness: 240, damping: 20 }}
-                className={`mr-3 inline-block ${w === "gift." ? "italic text-pink" : ""}`}
+                className={`mr-3 inline-block ${w === "gift." ? "text-lime" : ""}`}
               >
                 {w}
               </motion.span>
@@ -77,13 +79,13 @@ export function Hero() {
           >
             <Magnetic
               href="#try"
-              className="inline-block rounded-full bg-ink px-7 py-3.5 text-base font-semibold text-surface shadow-[var(--shadow-hard-sm)] transition-shadow hover:shadow-[var(--shadow-hard)]"
+              className="inline-flex items-center gap-1.5 rounded-full bg-lime px-7 py-3.5 text-base font-semibold text-white shadow-[var(--shadow-indigo)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-indigo-lg)]"
             >
               Create a gift →
             </Magnetic>
             <Magnetic
               href="#how"
-              className="inline-block rounded-full border border-line bg-surface px-7 py-3.5 text-base font-semibold text-text hover:border-ink/30"
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-7 py-3.5 text-base font-semibold text-ink shadow-[var(--shadow-hard-sm)] transition-colors duration-200 hover:border-lime/40 hover:text-lime"
             >
               See how it works
             </Magnetic>
@@ -100,7 +102,7 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <div className="mt-10 border-y border-ink/10 bg-lime/90 py-2.5">
+      <div className="mt-10 border-y border-line bg-surface-2 py-2.5">
         <Marquee items={["Send crypto", "No seed phrase", "Claim in seconds", "Fees on us", "Any occasion"]} />
       </div>
     </section>

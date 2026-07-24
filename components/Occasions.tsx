@@ -24,7 +24,7 @@ export function Occasions() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <h2 className="mb-3 font-display text-4xl font-semibold tracking-tight text-text md:text-6xl">
-            A card for every <span className="italic text-pink">occasion</span>.
+            A card for every <span className="text-lime">occasion</span>.
           </h2>
           <p className="mb-8 max-w-lg text-lg leading-relaxed text-muted">
             Each one is a one-of-a-kind holographic card. Pick one up and give it a toss.
@@ -33,7 +33,7 @@ export function Occasions() {
 
         <div
           ref={wall}
-          className="relative h-[500px] overflow-hidden rounded-[28px] border border-line bg-surface/50 shadow-hard backdrop-blur-sm md:h-[560px]"
+          className="relative h-[500px] overflow-hidden rounded-3xl border border-line bg-white/60 shadow-[var(--shadow-hard)] backdrop-blur-sm md:h-[560px]"
         >
           {OCCASION_LIST.map((o, i) => (
             <motion.div

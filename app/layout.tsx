@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { Fraunces, Bricolage_Grotesque, Space_Mono } from "next/font/google";
+import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
-// Warm, premium serif for headlines; a clean grotesque for body.
-const display = Fraunces({
+// Söhne proxy — one neutral grotesque for both headings and body.
+const display = Inter({
   subsets: ["latin"],
   variable: "--font-display",
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
 });
-const body = Bricolage_Grotesque({
+const body = Inter({
   subsets: ["latin"],
   variable: "--font-body",
+  weight: ["400", "500", "600"],
 });
-const mono = Space_Mono({
+const mono = Roboto_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {

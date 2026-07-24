@@ -14,11 +14,11 @@ export function Safe() {
     <section id="safe" className="relative z-10 px-4 py-20">
       <div className="mx-auto max-w-6xl">
         <div
-          className="rounded-[32px] border border-white/10 p-8 shadow-hard-lg md:p-12"
-          style={{ background: "#221c17" }}
+          className="rounded-3xl border border-white/10 p-8 shadow-hard-lg md:p-12"
+          style={{ background: "#0a2540" }}
         >
           <Reveal>
-            <p className="font-mono text-xs font-bold uppercase tracking-wide text-lime">Security</p>
+            <p className="font-mono text-xs font-bold uppercase tracking-wide text-[#b7b1ff]">Security</p>
             <h2 className="mt-2 max-w-2xl font-display text-4xl font-semibold tracking-tight text-white md:text-5xl">
               Locked until they open it.
             </h2>
@@ -44,7 +44,7 @@ export function Safe() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3 font-mono text-xs font-bold uppercase tracking-wide">
             {["Built on Solana", "Open source", "Passkey wallets", "No seed phrase"].map((b) => (
-              <span key={b} className="rounded-full border border-lime/50 px-3 py-1.5 text-lime">{b}</span>
+              <span key={b} className="rounded-full border border-[#635bff]/50 px-3 py-1.5 text-[#b7b1ff]">{b}</span>
             ))}
           </div>
         </div>

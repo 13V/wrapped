@@ -31,12 +31,12 @@ export default function Home() {
 
         {/* CTA band */}
         <section className="relative z-10 px-4 py-16">
-          <div className="animated-grad mx-auto max-w-6xl overflow-hidden rounded-[32px]">
-            <div className="border-b border-white/15 bg-lime/90 py-2">
+          <div className="animated-grad mx-auto max-w-6xl overflow-hidden rounded-3xl">
+            <div className="border-b border-white/20 bg-white/85 py-2 backdrop-blur">
               <Marquee items={["Give crypto as a gift", "No wallet needed", "Open in seconds"]} />
             </div>
             <Reveal className="p-10 text-center md:p-16">
-              <h2 className="font-display text-4xl font-semibold tracking-tight text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.35)] md:text-6xl">
+              <h2 className="font-display text-4xl font-semibold tracking-tight text-white [text-shadow:0_1px_12px_rgba(10,37,64,0.25)] md:text-6xl">
                 Go make someone&apos;s day.
               </h2>
               <p className="mx-auto mt-4 max-w-md text-lg text-white/90">
@@ -44,7 +44,7 @@ export default function Home() {
               </p>
               <Magnetic
                 href="#try"
-                className="mt-8 inline-block rounded-full bg-surface px-8 py-4 text-lg font-semibold text-ink shadow-[var(--shadow-hard)]"
+                className="mt-8 inline-block rounded-full bg-white px-8 py-4 text-lg font-semibold text-ink shadow-[var(--shadow-hard-lg)]"
               >
                 Create a gift →
               </Magnetic>

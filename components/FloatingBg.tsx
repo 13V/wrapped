@@ -30,24 +30,24 @@ export function FloatingBg() {
       {/* parallax gradient blobs */}
       <motion.div
         style={{ y: reduce ? 0 : blobY1 }}
-        className="absolute -left-32 top-[8%] h-[46vmax] w-[46vmax] rounded-full opacity-40 blur-3xl"
+        className="absolute -left-32 top-[8%] h-[46vmax] w-[46vmax] rounded-full opacity-[0.06] blur-3xl"
       >
         <motion.div
           animate={reduce ? undefined : { x: [0, 40, 0], y: [0, 30, 0] }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
           className="h-full w-full rounded-full"
-          style={{ background: "radial-gradient(circle, #9b6bff, transparent 62%)" }}
+          style={{ background: "radial-gradient(circle, #635bff, transparent 62%)" }}
         />
       </motion.div>
       <motion.div
         style={{ y: reduce ? 0 : blobY2 }}
-        className="absolute -right-40 top-[46%] h-[50vmax] w-[50vmax] rounded-full opacity-35 blur-3xl"
+        className="absolute -right-40 top-[46%] h-[50vmax] w-[50vmax] rounded-full opacity-[0.05] blur-3xl"
       >
         <motion.div
           animate={reduce ? undefined : { x: [0, -50, 0], y: [0, -30, 0] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
           className="h-full w-full rounded-full"
-          style={{ background: "radial-gradient(circle, #12b9d8, transparent 60%)" }}
+          style={{ background: "radial-gradient(circle, #4b8df8, transparent 60%)" }}
         />
       </motion.div>
 
@@ -57,7 +57,7 @@ export function FloatingBg() {
           <motion.span
             key={i}
             className="absolute select-none"
-            style={{ left: `${b.l}%`, top: `${b.t}%`, fontSize: b.s, opacity: 0.55 }}
+            style={{ left: `${b.l}%`, top: `${b.t}%`, fontSize: b.s, opacity: 0.22 }}
             animate={reduce ? undefined : { y: [0, b.dy, 0], rotate: [0, b.rot, 0] }}
             transition={{ duration: b.dur, repeat: Infinity, ease: "easeInOut", delay: (i % 5) * 0.6 }}
           >
