@@ -2,7 +2,7 @@
 
 import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { useRef, useState } from "react";
-import { HoloCard } from "./HoloCard";
+import { CardGift } from "./CardGift";
 import { fireConfetti } from "@/lib/confetti";
 
 const STEPS = [
@@ -80,24 +80,24 @@ export function HowItWorks() {
 
           {/* right: the morphing card */}
           <div
-            className="relative order-1 mx-auto flex h-[420px] w-full max-w-[300px] items-center justify-center md:order-2"
+            className="relative order-1 mx-auto flex h-[320px] w-full max-w-[440px] items-center justify-center md:order-2"
             style={{ perspective: 1100 }}
           >
-            <motion.div style={{ scale: cardScale, rotate: cardRot, x: cardX }} className="w-[250px]">
-              <HoloCard
+            <motion.div style={{ scale: cardScale, rotate: cardRot, x: cardX }} className="w-[380px] max-w-full">
+              <CardGift
                 gift={{ occ: "birthday", amt: "50", token: "USDC", to: "maya", from: "alex", msg: "your first crypto 🎂" }}
                 interactive={false}
-                hint={false}
+                float={false}
               />
             </motion.div>
 
             {/* sealed pack overlay */}
             <motion.div
               style={{ y: packY, rotate: packRot, opacity: packOpacity }}
-              className="absolute left-1/2 top-1/2 w-[250px] -translate-x-1/2 -translate-y-1/2"
+              className="absolute left-1/2 top-1/2 w-[380px] max-w-full -translate-x-1/2 -translate-y-1/2"
             >
               <div
-                className="relative aspect-[5/7] overflow-hidden rounded-[24px] border-[3px] border-white/15"
+                className="relative aspect-[1.586/1] overflow-hidden rounded-[24px] border-[3px] border-white/15"
                 style={{ background: "linear-gradient(150deg,#150e28,#0b0714)" }}
               >
                 <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />

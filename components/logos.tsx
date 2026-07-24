@@ -35,26 +35,28 @@ const TOKEN_LOGOS: Record<string, string> = {
   WIF: "/tokens/wif.png",
 };
 
-/** A tiny coin chip: the Solana mark for SOL, an icon for known/custom tokens. */
-export function TokenChip({ symbol, logo }: { symbol: string; logo?: string }) {
+/** A coin chip: the Solana mark for SOL, an icon for known/custom tokens. */
+export function TokenChip({ symbol, logo, size = "sm" }: { symbol: string; logo?: string; size?: "sm" | "lg" }) {
   const t = TOKENS[symbol] ?? { color: "#ffffff", ring: "#ffffff" };
   const src = logo || TOKEN_LOGOS[symbol];
+  const lg = size === "lg";
+  // lg is used only inside CardGift (a container-query context), so it scales in cqw.
+  const coin = lg ? "size-[5cqw]" : "size-4";
+  const px = lg ? 24 : 16;
+  const label = lg ? "text-[3.3cqw] font-bold" : "text-sm font-bold";
   return (
-    <span className="inline-flex items-center gap-1.5">
+    <span className={`inline-flex items-center ${lg ? "gap-[1.6cqw]" : "gap-1.5"}`}>
       {symbol === "SOL" && !logo ? (
-        <span className="grid size-4 place-items-center rounded-full bg-[#0b0714] p-[3px] ring-1 ring-white/40">
+        <span className={`grid ${coin} place-items-center rounded-full bg-[#0b0714] ${lg ? "p-[0.9cqw]" : "p-[3px]"} ring-1 ring-white/40`}>
           <SolanaMark className="h-full w-full" />
         </span>
       ) : src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={symbol} width={16} height={16} className="size-4 rounded-full bg-white/10 object-cover ring-1 ring-white/40" />
+        <img src={src} alt={symbol} width={px} height={px} className={`${coin} rounded-full bg-white/10 object-cover ring-1 ring-white/40`} />
       ) : (
-        <span
-          className="size-4 rounded-full ring-1 ring-white/40"
-          style={{ background: t.color }}
-        />
+        <span className={`${coin} rounded-full ring-1 ring-white/40`} style={{ background: t.color }} />
       )}
-      <span className="font-mono text-sm font-bold opacity-90">{symbol}</span>
+      <span className={`font-mono ${label} opacity-90`}>{symbol}</span>
     </span>
   );
 }

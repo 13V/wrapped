@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { HoloCard } from "./HoloCard";
+import { CardGift } from "./CardGift";
 import { Reveal } from "./Reveal";
 import { OCCASION_LIST, type OccasionKey } from "@/lib/occasions";
 import { encodeGift, buildGiftLink, quoteFeeSol, type Gift } from "@/lib/gift";
@@ -443,9 +443,9 @@ export function TryIt() {
           </div>
         </div>
 
-        <div className="sticky top-24 mx-auto w-full max-w-[300px]">
+        <div className="sticky top-24 mx-auto w-full max-w-[320px]">
           <p className="mb-3 text-center font-mono text-xs font-bold uppercase tracking-wide text-lime">↓ Live preview</p>
-          <HoloCard gift={gift} interactive />
+          <CardGift gift={gift} />
         </div>
       </div>
     </section>

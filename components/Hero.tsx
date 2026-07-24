@@ -96,7 +96,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ delay: 0.25, type: "spring", stiffness: 140, damping: 15 }}
-          className="mx-auto w-full max-w-[300px]"
+          className="mx-auto w-full max-w-[440px]"
         >
           <PackRip gift={{ occ: "birthday", amt: "50", token: "USDC", to: "maya", from: "alex", msg: "your first crypto 🎂" }} />
         </motion.div>

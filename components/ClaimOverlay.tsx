@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { Keypair } from "@solana/web3.js";
-import { HoloCard } from "./HoloCard";
+import { CardGift } from "./CardGift";
 import { parseGiftHash, type Gift } from "@/lib/gift";
 import { fireConfetti } from "@/lib/confetti";
 
@@ -154,12 +154,12 @@ export function ClaimOverlay() {
             )}
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.8, rotate: -6, y: 20 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
-              transition={{ type: "spring", stiffness: 140, damping: 14 }}
-              className="mx-auto mt-6 w-[260px]"
+              initial={{ opacity: 0, rotate: -5, y: 20 }}
+              animate={{ opacity: 1, rotate: 0, y: 0 }}
+              transition={{ type: "spring", stiffness: 140, damping: 15 }}
+              className="mx-auto mt-6 w-full max-w-[340px]"
             >
-              <HoloCard gift={gift} interactive float reveal opened={!!claimed} />
+              <CardGift gift={gift} />
             </motion.div>
 
             {gift.msg && <p className="mt-5 font-medium text-muted">&ldquo;{gift.msg}&rdquo;</p>}

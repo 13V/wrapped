@@ -2,18 +2,18 @@
 
 import { motion } from "motion/react";
 import { useRef } from "react";
-import { HoloCard } from "./HoloCard";
+import { CardGift } from "./CardGift";
 import { Reveal } from "./Reveal";
 import { OCCASION_LIST } from "@/lib/occasions";
 
 const AMTS = ["50", "100", "25", "10", "42"];
 const TOKS = ["SOL", "USDC", "BONK", "SOL", "WIF"];
 const POS = [
-  { l: "3%", t: "6%", r: -9 },
-  { l: "40%", t: "30%", r: 6 },
-  { l: "66%", t: "4%", r: -5 },
-  { l: "14%", t: "50%", r: 9 },
-  { l: "56%", t: "52%", r: -7 },
+  { l: "2%", t: "5%", r: -8 },
+  { l: "55%", t: "8%", r: 6 },
+  { l: "30%", t: "36%", r: -4 },
+  { l: "5%", t: "60%", r: 7 },
+  { l: "57%", t: "58%", r: -6 },
 ];
 
 export function Occasions() {
@@ -27,7 +27,7 @@ export function Occasions() {
             A card for every <span className="text-lime">occasion</span>.
           </h2>
           <p className="mb-8 max-w-lg text-lg leading-relaxed text-muted">
-            Each one is a one-of-a-kind holographic card. Pick one up and give it a toss.
+            Each one is a premium gift card, tuned to the moment. Pick one up and give it a toss.
           </p>
         </Reveal>
 
@@ -49,14 +49,13 @@ export function Occasions() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.09, type: "spring", stiffness: 160, damping: 15 }}
               style={{ left: POS[i].l, top: POS[i].t, rotate: POS[i].r }}
-              className="absolute w-[130px] cursor-grab touch-none active:cursor-grabbing sm:w-[150px]"
+              className="absolute w-[200px] cursor-grab touch-none active:cursor-grabbing sm:w-[240px]"
             >
               <div className="pointer-events-none">
-                <HoloCard
+                <CardGift
                   gift={{ occ: o.key, amt: AMTS[i], token: TOKS[i], to: "you", from: "wrapped", msg: o.blurb }}
                   interactive={false}
-                  hint={false}
-                  holo={o.holo}
+                  float={false}
                 />
               </div>
             </motion.div>

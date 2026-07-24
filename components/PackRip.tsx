@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
-import { HoloCard } from "./HoloCard";
+import { CardGift } from "./CardGift";
 import { fireConfetti } from "@/lib/confetti";
 import type { Gift } from "@/lib/gift";
 
@@ -18,7 +18,7 @@ export function PackRip({ gift }: { gift: Gift }) {
   }
 
   return (
-    <div className="relative mx-auto flex aspect-[5/7] w-full max-w-[300px] items-center justify-center">
+    <div className="relative mx-auto flex aspect-[1.586/1] w-full max-w-[420px] items-center justify-center">
       {/* the card underneath */}
       <motion.div
         initial={false}
@@ -26,7 +26,7 @@ export function PackRip({ gift }: { gift: Gift }) {
         transition={{ delay: ripped ? 0.18 : 0, type: "spring", stiffness: 150, damping: 15 }}
         className="absolute inset-0"
       >
-        <HoloCard gift={gift} interactive float reveal={ripped} />
+        <CardGift gift={gift} />
       </motion.div>
 
       {/* the sealed foil pack */}
