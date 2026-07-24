@@ -2,8 +2,7 @@
 
 import { motion, useMotionValue } from "motion/react";
 import { useRef } from "react";
-import { PackRip } from "./PackRip";
-import { Marquee } from "./Marquee";
+import { CardGift } from "./CardGift";
 import { Magnetic } from "./Magnetic";
 
 const words = ["Give", "crypto", "as", "a", "gift."];
@@ -93,17 +92,24 @@ export function Hero() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 0.25, type: "spring", stiffness: 140, damping: 15 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.15, duration: 0.5 }}
           className="mx-auto w-full max-w-[440px]"
         >
-          <PackRip gift={{ occ: "birthday", amt: "50", token: "USDC", to: "maya", from: "alex", msg: "your first crypto 🎂" }} />
+          <CardGift gift={{ occ: "birthday", amt: "50", token: "USDC", to: "maya", from: "alex", msg: "your first crypto 🎂" }} />
         </motion.div>
       </div>
 
-      <div className="mt-10 border-y border-line bg-surface-2 py-2.5">
-        <Marquee items={["Send crypto", "No seed phrase", "Claim in seconds", "Fees on us", "Any occasion"]} />
+      <div className="mt-10 border-y border-line bg-surface-2">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-3 gap-y-1.5 px-4 py-3.5 font-mono text-[11px] font-bold uppercase tracking-wide text-muted">
+          {["No wallet needed", "No seed phrase", "Claim in seconds", "Fees on us", "Non-custodial"].map((t, i) => (
+            <span key={t} className="flex items-center gap-3">
+              {i > 0 && <span className="text-line">·</span>}
+              <span>{t}</span>
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );

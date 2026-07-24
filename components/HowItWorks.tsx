@@ -97,12 +97,10 @@ export function HowItWorks() {
               className="absolute left-1/2 top-1/2 w-[380px] max-w-full -translate-x-1/2 -translate-y-1/2"
             >
               <div
-                className="relative aspect-[1.586/1] overflow-hidden rounded-[24px] border-[3px] border-white/15"
-                style={{ background: "linear-gradient(150deg,#150e28,#0b0714)" }}
+                className="relative aspect-[1.586/1] overflow-hidden rounded-[18px] border border-white/10 shadow-[0_20px_45px_-14px_rgba(10,16,40,0.55)]"
+                style={{ background: "linear-gradient(120deg,#191728,#0e0f1c 58%,#080910)" }}
               >
-                <div className="holo-bands absolute inset-0 opacity-60 mix-blend-screen" />
-                <div className="foil-tex absolute inset-0 opacity-70" />
-                <div className="absolute inset-x-0 top-[22%] flex items-center justify-between px-2 text-white">
+                <div className="absolute inset-x-0 top-[22%] flex items-center justify-between px-2 text-white/70">
                   <span>✂</span>
                   <div className="mx-1 h-0 flex-1" style={{ borderTop: "3px dashed rgba(255,255,255,.5)" }} />
                   <span className="rotate-90">✂</span>

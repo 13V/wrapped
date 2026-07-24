@@ -4,8 +4,6 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { TryIt } from "@/components/TryIt";
 import { Occasions } from "@/components/Occasions";
 import { Safe } from "@/components/Safe";
-import { Marquee } from "@/components/Marquee";
-import { CrossingMarquee } from "@/components/CrossingMarquee";
 import { ClaimOverlay } from "@/components/ClaimOverlay";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { Reveal } from "@/components/Reveal";
@@ -23,23 +21,19 @@ export default function Home() {
         <HowItWorks />
         <TryIt />
         <Occasions />
-        <CrossingMarquee
-          a={["A gift they'll keep", "One-of-a-kind holo", "Any token", "No seed phrase"]}
-          b={["Open in seconds", "Fees on us", "Non-custodial", "Made on Solana"]}
-        />
         <Safe />
 
         {/* CTA band */}
         <section className="relative z-10 px-4 py-16">
-          <div className="animated-grad mx-auto max-w-6xl overflow-hidden rounded-3xl">
-            <div className="border-b border-white/20 bg-white/85 py-2 backdrop-blur">
-              <Marquee items={["Give crypto as a gift", "No wallet needed", "Open in seconds"]} />
-            </div>
-            <Reveal className="p-10 text-center md:p-16">
-              <h2 className="font-display text-4xl font-semibold tracking-tight text-white [text-shadow:0_1px_12px_rgba(10,37,64,0.25)] md:text-6xl">
+          <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-ink shadow-[0_30px_60px_-24px_rgba(10,37,64,0.55)]">
+            {/* subtle indigo glow — restrained, fintech */}
+            <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(80% 130% at 15% 0%, rgba(99,91,255,0.30), transparent 55%)" }} />
+            <div aria-hidden className="pointer-events-none absolute inset-0 opacity-70" style={{ background: "radial-gradient(70% 120% at 100% 100%, rgba(75,141,248,0.20), transparent 55%)" }} />
+            <Reveal className="relative p-10 text-center md:p-16">
+              <h2 className="font-display text-4xl font-semibold tracking-tight text-white md:text-6xl">
                 Go make someone&apos;s day.
               </h2>
-              <p className="mx-auto mt-4 max-w-md text-lg text-white/90">
+              <p className="mx-auto mt-4 max-w-md text-lg text-white/75">
                 The best surprise is a gift they never saw coming — and one they get to keep.
               </p>
               <Magnetic
